@@ -1,4 +1,16 @@
 .footer {
-    height: 18px;
-    background-color: green;
+    margin-bottom: 36px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1280px){
+    .footer {
+        margin-bottom: calc(36px + (60 - 36) * (100vw - 320px) / 960);
+        margin-left: calc(18px + (0 - 19) * (100vw - 320px) / 960);
+        margin-right: calc(18px + (0 - 19) * (100vw - 320px) / 960);
+    }
+}
+@media screen and (min-width: 1281px){
+    .footer {
+        margin-bottom: 60px;
+    }
 }
