@@ -1,4 +1,15 @@
 .profile {
-    height: 120px;
-    background-color: darkcyan;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    align-items: center;
+    margin-bottom: 36px;
+}
+
+@media screen and (min-width: 1024px) {
+    .profile {
+        flex-direction: row;
+        align-items: start;
+        margin-bottom: 50px;
+    }
 }
