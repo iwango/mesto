@@ -1,0 +1,11 @@
+.place__caption {
+  padding: 25px 0 25px;
+  color: #000;
+  font-size: 24px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  grid-column: 2 / 3;
+  grid-row: 2 / -1;
+}
