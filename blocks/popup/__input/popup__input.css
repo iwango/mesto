@@ -9,6 +9,6 @@
   margin-bottom: 30px;
 }
 
-.popup__input::placeholder {
-  color: #000;
+.popup__input:focus::placeholder {
+  color: transparent;
 }
