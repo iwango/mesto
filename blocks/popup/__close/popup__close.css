@@ -9,6 +9,8 @@
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: cover;
+  -webkit-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
   transition: 0.5s ease-in-out;
 }
 .popup__close:hover {

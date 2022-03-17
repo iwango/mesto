@@ -4,6 +4,7 @@
   font-weight: 500;
   padding-left: 25px;
   text-rendering: optimizeLegibility;
+  -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
