@@ -1,9 +1,7 @@
 .place {
-  width: 282px;
   background-color: #fff;
-  display: grid;
-  grid-template-columns: 21px auto 22px 20px;
-  grid-template-rows: 282px 79px;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   border-radius: 10px;
   border: none;
