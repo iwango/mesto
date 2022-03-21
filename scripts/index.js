@@ -19,7 +19,7 @@ function openPopupWindow() {
   profileNameField.value = profileName.textContent;
   profileEmploymentField.value = profileEmployment.textContent;
   popup.classList.add('popup_opened');
-  return openedWindow = popup;
+  openedWindow = popup; // присваевается окно которое надо закрыть в функции closePoupWindow
 }
 // закрытие попап
 function closePoupWindow() {

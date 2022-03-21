@@ -5,7 +5,7 @@
   -ms-grid-columns: 1fr 10px 18px;
   grid-template-columns: 1fr 18px;
   grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-row-gap: 7px;
   max-width: 100%;
 }
 
@@ -13,7 +13,6 @@
   .profile__info {
     margin: 24px 16px 0 30px;
     grid-column-gap: 20px;
-    grid-row-gap: 7px;
     max-width: 50%;
   }
 }

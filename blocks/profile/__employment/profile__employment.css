@@ -2,7 +2,7 @@
   margin: 0 auto;
   font-size: 14px;
   font-weight: 400;
-  line-height: normal;
+  line-height: 17px;
   grid-column: 1 / -1;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
@@ -14,6 +14,7 @@
 @media screen and (min-width: 1024px) {
   .profile__employment {
     font-size: 18px;
+    line-height: 22px;
     margin-left: 0;
     -ms-grid-column: 1;
     -ms-grid-column-span: 1;
