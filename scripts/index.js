@@ -11,19 +11,16 @@ let popupForm = document.querySelector('.popup__form');
 // пременные для полей ввода в редакторе профиля
 let profileNameField = document.querySelector('#profile_name_field');
 let profileEmploymentField = document.querySelector('#profile_employment_field');
-// переменная для записи, какое окно открыто. значение записывается через return
-let openedWindow;
 
 // открытие попап, заполнение формы из DOM, возвращает DOM элемент который надо закрыть в функции closePoupWindow
 function openPopupWindow() {
   profileNameField.value = profileName.textContent;
   profileEmploymentField.value = profileEmployment.textContent;
   popup.classList.add('popup_opened');
-  openedWindow = popup; // присваевается окно которое надо закрыть в функции closePoupWindow
 }
 // закрытие попап
 function closePoupWindow() {
-  openedWindow.classList.remove('popup_opened');
+  popup.classList.remove('popup_opened');
 }
 // запись данных в DOM после редактирования с отменой стандартной обработки формы и закрытием попап
 function formSubmitHandler (evt) {
