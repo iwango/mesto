@@ -3,7 +3,6 @@
   height: 24.4px;
   margin-top: 28px;
   margin-left: 27px;
-  opacity: 0.19;
 }
 
 @media screen and (min-width: 320px) and (max-width: 1280px){
@@ -12,11 +11,6 @@
     height: calc(24.4px + (33 - 24.4) * (100vw - 320px) / 960);
     margin-top: calc(28px + (45 - 28) * (100vw - 320px) / 960);
     margin-left: calc(27px + (0 - 27) * (100vw - 320px) / 960);
-  }
-}
-@media screen and (min-width: 768px){
-  .header__logo {
-    opacity: 1;
   }
 }
 @media screen and (min-width: 1281px){

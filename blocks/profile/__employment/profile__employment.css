@@ -2,6 +2,7 @@
   margin: 0 auto;
   font-size: 14px;
   font-weight: 400;
+  line-height: normal;
   grid-column: 1 / -1;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
