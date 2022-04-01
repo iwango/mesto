@@ -1,4 +1,4 @@
-.profile__add-button {
+.profile__place-add-button {
   height: 50px;
   width: 282px;
   border-radius: 2px;
@@ -12,13 +12,13 @@
   -o-transition: 0.5s ease-in-out;
   transition: 0.5s ease-in-out;
 }
-.profile__add-button:hover {
+.profile__place-add-button:hover {
   cursor: pointer;
   opacity: .6;
 }
 
 @media screen and (min-width: 1024px) {
-  .profile__add-button {
+  .profile__place-add-button {
     width: 150px;
     background-size: 22px;
     -ms-flex-item-align: center;
