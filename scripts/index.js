@@ -86,8 +86,13 @@ function submitFormAddPlace(evt) {
   placeElement.querySelector('.place__title').textContent = placeName.value; // название из формы
   placeElement.querySelector('.place__img').src = placeLinkImage.value; // картинка из формы
   elementsList.prepend(placeElement); // добавление карточки в начало списка  DOM
+  placeElement.querySelector('.place__like-button').addEventListener('click', switchLikeIcon); //событие для лайка
   initialCards.push({name: placeName.value, link: placeLinkImage.value}); // добавление карточки в массив
   closePoupWindow(); // закрытие окна
+}
+// переключение состояния лайка
+function switchLikeIcon(evt) {
+  evt.target.classList.toggle('place__like-button_active');
 }
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
@@ -97,7 +102,6 @@ closeAddPlaceButton.addEventListener('click', closePoupWindow); // закрыт�
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
 
-
 // начальное заполнение из массива черз обход функцией forEach
 initialCards.forEach(function (item){
   const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клон шаблона
@@ -105,4 +109,5 @@ initialCards.forEach(function (item){
   placeElement.querySelector('.place__title').textContent = item.name; // название места
   placeElement.querySelector('.place__img').src = item.link; // ссылка на изображение
   elementsList.prepend(placeElement); // вывод в DOM
+  placeElement.querySelector('.place__like-button').addEventListener('click', switchLikeIcon); // событие для лайка
 });
