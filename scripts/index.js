@@ -21,7 +21,37 @@ const profileEmploymentField = document.querySelector('#profile_employment_field
   // редактор места
 const placeName = document.querySelector('#place_name_field');
 const placeLinkImage = document.querySelector('#place_link_image');
-
+// список мест
+const elementsList = document.querySelector('.elements__list');
+// шаблон для карточек
+const placeTemplate = document.querySelector('#place-template').content;
+// начальный массив мест
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
 // Функции
   //попап окна
     // редактировать профиль
@@ -51,9 +81,13 @@ function submitFormEditProfile (evt) {
     // место
 function submitFormAddPlace(evt) {
   evt.preventDefault(); // отмена стандартной обработки формы
-  console.log('Название места ' + placeName.value);
-  console.log('ссылка на картинку ' + placeLinkImage.value);
-  closePoupWindow();
+  const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клонирование шаблона
+  placeElement.querySelector('.place__img').alt = placeName.value; // описание из формы
+  placeElement.querySelector('.place__title').textContent = placeName.value; // название из формы
+  placeElement.querySelector('.place__img').src = placeLinkImage.value; // картинка из формы
+  elementsList.prepend(placeElement); // добавление карточки в начало списка  DOM
+  initialCards.push({name: placeName.value, link: placeLinkImage.value}); // добавление карточки в массив
+  closePoupWindow(); // закрытие окна
 }
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
@@ -62,3 +96,13 @@ closeProfileButton.addEventListener('click', closePoupWindow); // закрыть
 closeAddPlaceButton.addEventListener('click', closePoupWindow); // закрыть окно место
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
+
+
+// начальное заполнение из массива черз обход функцией forEach
+initialCards.forEach(function (item){
+  const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клон шаблона
+  placeElement.querySelector('.place__img').alt = item.name; // описание alt
+  placeElement.querySelector('.place__title').textContent = item.name; // название места
+  placeElement.querySelector('.place__img').src = item.link; // ссылка на изображение
+  elementsList.prepend(placeElement); // вывод в DOM
+});
