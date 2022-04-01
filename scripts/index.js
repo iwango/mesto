@@ -1,16 +1,16 @@
 // кнопоки для открытия и закрытия окна редактирования профиля
-let editButton = document.querySelector('.profile__edit-button');
-let closeButton = document.querySelector('.popup__close');
+const profileEditButton = document.querySelector('.profile__edit-button');
+const closeButton = document.querySelector('.popup__close');
 // поап окно для управления видимостью с помощью добавления отдельного селектора
-let popup = document.querySelector('.popup');
+const popup = document.querySelector('.popup__edit-profile');
 // строки из HTML для редактирования профиля
-let profileName = document.querySelector('.profile__name');
-let profileEmployment = document.querySelector('.profile__employment');
+const profileName = document.querySelector('.profile__name');
+const profileEmployment = document.querySelector('.profile__employment');
 // форма для редактирования профиля
-let popupForm = document.querySelector('.popup__form');
+const popupFormEditProfile = document.querySelector('.popup__form-edit-profile');
 // пременные для полей ввода в редакторе профиля
-let profileNameField = document.querySelector('#profile_name_field');
-let profileEmploymentField = document.querySelector('#profile_employment_field');
+const profileNameField = document.querySelector('#profile_name_field');
+const profileEmploymentField = document.querySelector('#profile_employment_field');
 
 // открытие попап, заполнение формы из DOM, возвращает DOM элемент который надо закрыть в функции closePoupWindow
 function openPopupWindow() {
@@ -20,16 +20,16 @@ function openPopupWindow() {
 }
 // закрытие попап
 function closePoupWindow() {
-  popup.classList.remove('popup_opened');
+  document.querySelector('.popup_opened').classList.remove('popup_opened'); // выбор открытого окна по селектору .popup_opened и закрытие
 }
 // запись данных в DOM после редактирования с отменой стандартной обработки формы и закрытием попап
-function formSubmitHandler (evt) {
+function submitFormEditProfile (evt) {
   evt.preventDefault();
   profileName.textContent = profileNameField.value;
   profileEmployment.textContent = profileEmploymentField.value;
   closePoupWindow();
 }
 // прослушивание событий
-editButton.addEventListener('click', openPopupWindow); // редактировать профиль
+profileEditButton.addEventListener('click', openPopupWindow); // редактировать профиль
 closeButton.addEventListener('click', closePoupWindow); // закрыть окно
-popupForm.addEventListener('submit', formSubmitHandler); // отправка формы
+popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы
