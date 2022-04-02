@@ -4,12 +4,17 @@ const profileEditButton = document.querySelector('.profile__edit-button'); // р
 const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
 const closeProfileButton = document.querySelector('.popup__close-profile'); // закрыть профиль
 const closeAddPlaceButton = document.querySelector('.popup__close-add-place'); // закрыть место
+const closeShowImageButton = document.querySelector('.popup__close-show-image'); // закрыть картинку
 // поап окна для управления видимостью с помощью добавления отдельного селектора
 const popupEditProfile = document.querySelector('.popup__edit-profile'); //профиль
 const popupAddPlace = document.querySelector('.popup__add-place'); // место
+const popupShowImage = document.querySelector('.popup__show-image'); // картинка
 // строки из HTML для редактирования профиля
 const profileName = document.querySelector('.profile__name');
 const profileEmployment = document.querySelector('.profile__employment');
+// данные для попап картинки
+const popupFigureImage = document.querySelector('.popup__figure-image'); // изображение
+const popupFigureCaption = document.querySelector('.popup__figure-caption'); // описание
 // форма для редактирования профиля
 const popupFormEditProfile = document.querySelector('.popup__form-edit-profile');
 // форма для редактирования места
@@ -92,9 +97,16 @@ function submitFormAddPlace(evt) {
 function switchLikeIcon(evt) {
   evt.target.classList.toggle('place__like-button_active');
 }
+// удаление карточки из DOM
 function deleteCard(evt) {
   evt.target.closest('.elements__item').remove(); // удаление карточки. closest ближайший родитель с селектором
   // удаленные карточки в массиве пока остаются ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!
+}
+// попап с картинкой
+function showPopupPlaceImage(evt) {
+  popupFigureImage.src = evt.target.src; // адрес картинки из src нажатой каринки
+  popupFigureCaption.textContent = evt.target.alt; // описание из alt ажатой картинки
+  popupShowImage.classList.add('popup_opened'); // закрытие
 }
 // Заполнение карточки, вывод в DOM и событие для лайка
 function renderElement(placeAltName, placeName, placeLinkImage) {
@@ -103,14 +115,18 @@ function renderElement(placeAltName, placeName, placeLinkImage) {
   placeElement.querySelector('.place__title').textContent = placeName; // описание места
   placeElement.querySelector('.place__img').src = placeLinkImage; // ссылка на изображение
   elementsList.prepend(placeElement); // вывод в DOM заполненой карточки
+  // добавление индивидуальных событий для каждой карточки
   placeElement.querySelector('.place__like-button').addEventListener('click', switchLikeIcon); // событие для лайка
   placeElement.querySelector('.place__delete-button').addEventListener('click', deleteCard); // событие для корзины
+  placeElement.querySelector('.place__img').addEventListener('click', showPopupPlaceImage); // событие для картинки
+
 }
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
 placeAddButton.addEventListener('click', openPoupAddplace); // добавить место
 closeProfileButton.addEventListener('click', closePoupWindow); // закрыть окно редактировать профиль
 closeAddPlaceButton.addEventListener('click', closePoupWindow); // закрыть окно место
+closeShowImageButton.addEventListener('click', closePoupWindow); // закрыть окно место
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
 

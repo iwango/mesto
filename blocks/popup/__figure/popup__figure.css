@@ -1,0 +1,8 @@
+.popup__figure {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+}
