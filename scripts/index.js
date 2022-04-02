@@ -92,7 +92,11 @@ function submitFormAddPlace(evt) {
 function switchLikeIcon(evt) {
   evt.target.classList.toggle('place__like-button_active');
 }
-// Заполнение карточки, вывод в DOM и событие для лайка ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function deleteCard(evt) {
+  evt.target.closest('.elements__item').remove(); // удаление карточки. closest ближайший родитель с селектором
+  // удаленные карточки в массиве пока остаются ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!
+}
+// Заполнение карточки, вывод в DOM и событие для лайка
 function renderElement(placeAltName, placeName, placeLinkImage) {
   const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клонирование карточки из шаблона
   placeElement.querySelector('.place__img').alt = placeAltName; // альтернативное описание места
@@ -100,6 +104,7 @@ function renderElement(placeAltName, placeName, placeLinkImage) {
   placeElement.querySelector('.place__img').src = placeLinkImage; // ссылка на изображение
   elementsList.prepend(placeElement); // вывод в DOM заполненой карточки
   placeElement.querySelector('.place__like-button').addEventListener('click', switchLikeIcon); // событие для лайка
+  placeElement.querySelector('.place__delete-button').addEventListener('click', deleteCard); // событие для корзины
 }
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
