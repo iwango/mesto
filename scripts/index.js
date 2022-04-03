@@ -6,9 +6,9 @@ const closeProfileButton = document.querySelector('.popup__close-profile'); // �
 const closeAddPlaceButton = document.querySelector('.popup__close-add-place'); // закрыть место
 const closeShowImageButton = document.querySelector('.popup__close-show-image'); // закрыть картинку
 // поап окна для управления видимостью с помощью добавления отдельного селектора
-const popupEditProfile = document.querySelector('.popup__edit-profile'); //профиль
-const popupAddPlace = document.querySelector('.popup__add-place'); // место
-const popupShowImage = document.querySelector('.popup__show-image'); // картинка
+const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
+const popupAddPlace = document.querySelector('.popup_add-place'); // место
+const popupShowImage = document.querySelector('.popup_show-image'); // картинка
 // строки из HTML для редактирования профиля
 const profileName = document.querySelector('.profile__name');
 const profileEmployment = document.querySelector('.profile__employment');
