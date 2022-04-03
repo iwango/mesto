@@ -57,12 +57,14 @@ function submitFormEditProfile (evt) {
 // место
 function submitFormAddPlace(evt) {
   evt.preventDefault(); // отмена стандартной обработки формы
-  const placeAltName = placeNameField.value; // описание из формы
-  const placeName = placeNameField.value; // название из формы
-  const placeLinkImage = placeLinkImageField.value; // картинка из формы
+  // формирование объекта для добавления карточки
+  const card =   {
+    name: placeNameField.value,
+    link: placeLinkImageField.value
+  }
   placeNameField.value = ''; // очистка значений  в форме
   placeLinkImageField.value = ''; // очистка значений в форме
-  renderElement(placeAltName, placeName, placeLinkImage); // передать значения для отрисовки DOM
+  renderElement(card); // передать значения для отрисовки DOM
   hidePopupWindow(popupAddPlace); // Спрятать окна
 }
 // переключение состояния лайка
@@ -80,11 +82,11 @@ function showPopupPlaceImage(evt) {
   openPopup(popupShowImage); // видимость
 }
 // Заполнение карточки, вывод в DOM и событие для лайка
-function renderElement(placeAltName, placeName, placeLinkImage) {
+function renderElement(card) {
   const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клонирование карточки из шаблона
-  placeElement.querySelector('.place__img').alt = placeAltName; // альтернативное описание места
-  placeElement.querySelector('.place__title').textContent = placeName; // описание места
-  placeElement.querySelector('.place__img').src = placeLinkImage; // ссылка на изображение
+  placeElement.querySelector('.place__img').alt = card.name; // альтернативное описание места
+  placeElement.querySelector('.place__title').textContent = card.name; // описание места
+  placeElement.querySelector('.place__img').src = card.link; // ссылка на изображение
   elementsList.prepend(placeElement); // вывод в DOM заполненой карточки
   // добавление индивидуальных событий для каждой карточки
   placeElement.querySelector('.place__like-button').addEventListener('click', switchLikeIcon); // событие для лайка
@@ -102,11 +104,8 @@ popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // от�
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
 
 // начальное заполнение карточек из массива черз обход функцией forEach
-initialCards.forEach(function (item){
-  const placeAltName = item.name; // описание alt
-  const placeName = item.name; // название места
-  const placeLinkImage = item.link; // ссылка на изображение
-  renderElement(placeAltName, placeName, placeLinkImage); // передать значения для отрисовки DOM
+initialCards.forEach(function (card){
+  renderElement(card); // передать каждую карточку для отрисовки DOM
 });
 
 // После загрузки DOM ерева добавление попап окнам display flex. если сразу добавить то отрисовывается анимация при загрузке страницы
