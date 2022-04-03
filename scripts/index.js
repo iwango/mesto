@@ -43,8 +43,8 @@ function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible');
 }
 // Спрятать попап
-function hidePopupWindow() {
-  document.querySelector('.popup__visible').classList.remove('popup__visible'); // выбор открытого видимого окна по селектору .popup__visible и сделать невидимым
+function hidePopupWindow(openedPopup) {
+  openedPopup.classList.remove('popup__visible'); // выбор открытого видимого окна параметром и удаление .popup__visible для невидимости
 }
 // Обработка Submit
 //профиль
@@ -52,7 +52,7 @@ function submitFormEditProfile (evt) {
   evt.preventDefault(); // отмена стандартной обработки формы
   profileName.textContent = profileNameField.value; // Запись данных в DOM
   profileEmployment.textContent = profileEmploymentField.value; // Запись данных в DOM
-  hidePopupWindow();  // Спрятать попап
+  hidePopupWindow(popupEditProfile);  // Спрятать попап
 }
 // место
 function submitFormAddPlace(evt) {
@@ -63,7 +63,7 @@ function submitFormAddPlace(evt) {
   placeNameField.value = ''; // очистка значений  в форме
   placeLinkImageField.value = ''; // очистка значений в форме
   renderElement(placeAltName, placeName, placeLinkImage); // передать значения для отрисовки DOM
-  hidePopupWindow(); // Спрятать окна
+  hidePopupWindow(popupAddPlace); // Спрятать окна
 }
 // переключение состояния лайка
 function switchLikeIcon(evt) {
@@ -95,9 +95,9 @@ function renderElement(placeAltName, placeName, placeLinkImage) {
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
 placeAddButton.addEventListener('click', () => openPopup(popupAddPlace)); // добавить место
-closeProfileButton.addEventListener('click', hidePopupWindow); //спрятать окно редактировать профиль
-closeAddPlaceButton.addEventListener('click', hidePopupWindow); //спрятать окно место
-closeShowImageButton.addEventListener('click', hidePopupWindow); //спрятать окно картинки
+closeProfileButton.addEventListener('click', () => hidePopupWindow(popupEditProfile)); //спрятать окно редактировать профиль
+closeAddPlaceButton.addEventListener('click', () => hidePopupWindow(popupAddPlace)); //спрятать окно место
+closeShowImageButton.addEventListener('click', () => hidePopupWindow(popupShowImage)); //спрятать окно картинки
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
 
