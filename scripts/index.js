@@ -63,15 +63,15 @@ const initialCards = [
 function openPopupEditProfile() {
   profileNameField.value = profileName.textContent; // заполнение формы из DOM
   profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
-  popupEditProfile.classList.add('popup_opened'); //  открытие попап
+  popupEditProfile.classList.add('popup__visible'); //  открытие попап
 }
 // Добавление места
-function openPoupAddplace() {
-  popupAddPlace.classList.add('popup_opened');
+function openPopupAddPlace() {
+  popupAddPlace.classList.add('popup__visible');
 }
-// закрытие попап
-function closePoupWindow() {
-  document.querySelector('.popup_opened').classList.remove('popup_opened'); // выбор открытого окна по селектору .popup_opened и закрытие
+// Спрятать попап
+function hidePopupWindow() {
+  document.querySelector('.popup__visible').classList.remove('popup__visible'); // выбор открытого видимого окна по селектору .popup__visible и сделать невидимым
 }
 // Обработка Submit
 //профиль
@@ -79,19 +79,19 @@ function submitFormEditProfile (evt) {
   evt.preventDefault(); // отмена стандартной обработки формы
   profileName.textContent = profileNameField.value; // Запись данных в DOM
   profileEmployment.textContent = profileEmploymentField.value; // Запись данных в DOM
-  closePoupWindow();  // Закрытие попап
+  hidePopupWindow();  // Спрятать попап
 }
 // место
 function submitFormAddPlace(evt) {
   evt.preventDefault(); // отмена стандартной обработки формы
-  placeAltName = placeNameField.value; // описание из формы
-  placeName = placeNameField.value; // название из формы
-  placeLinkImage = placeLinkImageField.value; // картинка из формы
+  const placeAltName = placeNameField.value; // описание из формы
+  const placeName = placeNameField.value; // название из формы
+  const placeLinkImage = placeLinkImageField.value; // картинка из формы
   placeNameField.value = ''; // очистка значений  в форме
   placeLinkImageField.value = ''; // очистка значений в форме
   initialCards.push({name: placeName, link: placeLinkImage}); // добавление карточки в массив
   renderElement(placeAltName, placeName, placeLinkImage); // передать значения для отрисовки DOM
-  closePoupWindow(); // закрытие окна
+  hidePopupWindow(); // Спрятать окна
 }
 // переключение состояния лайка
 function switchLikeIcon(evt) {
@@ -100,13 +100,13 @@ function switchLikeIcon(evt) {
 // удаление карточки из DOM
 function deleteCard(evt) {
   evt.target.closest('.elements__item').remove(); // удаление карточки. closest ближайший родитель с селектором
-  // удаленные карточки в массиве пока остаются ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // удаленные карточки, в массиве пока остаются ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 // попап с картинкой
 function showPopupPlaceImage(evt) {
   popupFigureImage.src = evt.target.src; // адрес картинки из src нажатой каринки
   popupFigureCaption.textContent = evt.target.alt; // описание из alt ажатой картинки
-  popupShowImage.classList.add('popup_opened'); // закрытие
+  popupShowImage.classList.add('popup__visible'); // видимость
 }
 // Заполнение карточки, вывод в DOM и событие для лайка
 function renderElement(placeAltName, placeName, placeLinkImage) {
@@ -123,17 +123,24 @@ function renderElement(placeAltName, placeName, placeLinkImage) {
 }
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
-placeAddButton.addEventListener('click', openPoupAddplace); // добавить место
-closeProfileButton.addEventListener('click', closePoupWindow); // закрыть окно редактировать профиль
-closeAddPlaceButton.addEventListener('click', closePoupWindow); // закрыть окно место
-closeShowImageButton.addEventListener('click', closePoupWindow); // закрыть окно место
+placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
+closeProfileButton.addEventListener('click', hidePopupWindow); //спрятать окно редактировать профиль
+closeAddPlaceButton.addEventListener('click', hidePopupWindow); //спрятать окно место
+closeShowImageButton.addEventListener('click', hidePopupWindow); //спрятать окно картинки
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
 
 // начальное заполнение карточек из массива черз обход функцией forEach
 initialCards.forEach(function (item){
-  placeAltName = item.name; // описание alt
-  placeName = item.name; // название места
-  placeLinkImage = item.link; // ссылка на изображение
+  const placeAltName = item.name; // описание alt
+  const placeName = item.name; // название места
+  const placeLinkImage = item.link; // ссылка на изображение
   renderElement(placeAltName, placeName, placeLinkImage); // передать значения для отрисовки DOM
+});
+
+// После загрузки DOM ерева добавление попап окнам display flex. если сразу добавить то отрисовывается анимация при загрузке страницы
+document.addEventListener("DOMContentLoaded", function(){
+  popupEditProfile.classList.add('popup_opened');
+  popupAddPlace.classList.add('popup_opened');
+  popupShowImage.classList.add('popup_opened');
 });
