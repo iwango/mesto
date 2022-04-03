@@ -1,14 +1,14 @@
 //константы
-// кнопоки для открытия и закрытия окон
-const profileEditButton = document.querySelector('.profile__edit-button'); // редактировать профиль
-const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
-const closeProfileButton = document.querySelector('.popup__close-profile'); // закрыть профиль
-const closeAddPlaceButton = document.querySelector('.popup__close-add-place'); // закрыть место
-const closeShowImageButton = document.querySelector('.popup__close-show-image'); // закрыть картинку
-// поап окна для управления видимостью с помощью добавления отдельного селектора
+// попап окна для управления видимостью с помощью добавления отдельных селектора
 const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
 const popupAddPlace = document.querySelector('.popup_add-place'); // место
 const popupShowImage = document.querySelector('.popup_show-image'); // картинка
+// кнопоки для открытия и закрытия окон
+const profileEditButton = document.querySelector('.profile__edit-button'); // редактировать профиль
+const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
+const closeProfileButton = popupEditProfile.querySelector('.popup__close-profile'); // закрыть профиль
+const closeAddPlaceButton = popupAddPlace.querySelector('.popup__close-add-place'); // закрыть место
+const closeShowImageButton = popupShowImage.querySelector('.popup__close-show-image'); // закрыть картинку
 // строки из HTML для редактирования профиля
 const profileName = document.querySelector('.profile__name');
 const profileEmployment = document.querySelector('.profile__employment');
