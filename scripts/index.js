@@ -63,11 +63,11 @@ const initialCards = [
 function openPopupEditProfile() {
   profileNameField.value = profileName.textContent; // заполнение формы из DOM
   profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
-  popupEditProfile.classList.add('popup__visible'); //  открытие попап
+  openPopup(popupEditProfile); //  открытие попап
 }
-// Добавление места
-function openPopupAddPlace() {
-  popupAddPlace.classList.add('popup__visible');
+// открытие попап с параметром
+function openPopup(openablePopup) {
+  openablePopup.classList.add('popup__visible');
 }
 // Спрятать попап
 function hidePopupWindow() {
@@ -106,7 +106,7 @@ function deleteCard(evt) {
 function showPopupPlaceImage(evt) {
   popupFigureImage.src = evt.target.src; // адрес картинки из src нажатой каринки
   popupFigureCaption.textContent = evt.target.alt; // описание из alt ажатой картинки
-  popupShowImage.classList.add('popup__visible'); // видимость
+  openPopup(popupShowImage); // видимость
 }
 // Заполнение карточки, вывод в DOM и событие для лайка
 function renderElement(placeAltName, placeName, placeLinkImage) {
@@ -123,7 +123,7 @@ function renderElement(placeAltName, placeName, placeLinkImage) {
 }
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
-placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
+placeAddButton.addEventListener('click', () => openPopup(popupAddPlace)); // добавить место
 closeProfileButton.addEventListener('click', hidePopupWindow); //спрятать окно редактировать профиль
 closeAddPlaceButton.addEventListener('click', hidePopupWindow); //спрятать окно место
 closeShowImageButton.addEventListener('click', hidePopupWindow); //спрятать окно картинки
