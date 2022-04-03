@@ -13,19 +13,19 @@ const closeShowImageButton = popupShowImage.querySelector('.popup__close-show-im
 const profileName = document.querySelector('.profile__name');
 const profileEmployment = document.querySelector('.profile__employment');
 // данные для попап картинки
-const popupFigureImage = document.querySelector('.popup__figure-image'); // изображение
-const popupFigureCaption = document.querySelector('.popup__figure-caption'); // описание
+const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение
+const popupFigureCaption = popupShowImage.querySelector('.popup__figure-caption'); // описание
 // форма для редактирования профиля
-const popupFormEditProfile = document.querySelector('.popup__form-edit-profile');
+const popupFormEditProfile = popupEditProfile.querySelector('.popup__form-edit-profile');
 // форма для редактирования места
-const popupFormAddPlace = document.querySelector('.popup__form-add-place');
+const popupFormAddPlace = popupAddPlace.querySelector('.popup__form-add-place');
 // пременные для полей ввода
 // редактор профиля
-const profileNameField = document.querySelector('#profile_name_field');
-const profileEmploymentField = document.querySelector('#profile_employment_field');
+const profileNameField = popupFormEditProfile.querySelector('#profile_name_field');
+const profileEmploymentField = popupFormEditProfile.querySelector('#profile_employment_field');
 // редактор места
-const placeNameField = document.querySelector('#place_name_field');
-const placeLinkImageField = document.querySelector('#place_link_image');
+const placeNameField = popupFormAddPlace.querySelector('#place_name_field');
+const placeLinkImageField = popupFormAddPlace.querySelector('#place_link_image');
 // список мест
 const elementsList = document.querySelector('.elements__list');
 // шаблон для карточек
