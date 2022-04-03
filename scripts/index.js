@@ -89,7 +89,6 @@ function submitFormAddPlace(evt) {
   const placeLinkImage = placeLinkImageField.value; // картинка из формы
   placeNameField.value = ''; // очистка значений  в форме
   placeLinkImageField.value = ''; // очистка значений в форме
-  initialCards.push({name: placeName, link: placeLinkImage}); // добавление карточки в массив
   renderElement(placeAltName, placeName, placeLinkImage); // передать значения для отрисовки DOM
   hidePopupWindow(); // Спрятать окна
 }
@@ -100,7 +99,6 @@ function switchLikeIcon(evt) {
 // удаление карточки из DOM
 function deleteCard(evt) {
   evt.target.closest('.elements__item').remove(); // удаление карточки. closest ближайший родитель с селектором
-  // удаленные карточки, в массиве пока остаются ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 // попап с картинкой
 function showPopupPlaceImage(evt) {
