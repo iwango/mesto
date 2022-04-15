@@ -34,8 +34,7 @@ const placeTemplate = document.querySelector('#place-template').content;
 //попап окна
 // редактировать профиль
 function openPopupEditProfile() {
-  profileNameField.value = profileName.textContent; // заполнение формы из DOM
-  profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
+  fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
 }
 // открытие попап с параметром
@@ -102,6 +101,15 @@ closeAddPlaceButton.addEventListener('click', () => hidePopupWindow(popupAddPlac
 closeShowImageButton.addEventListener('click', () => hidePopupWindow(popupShowImage)); //спрятать окно картинки
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
+
+// заполнить поля из DOM
+function fillInitialProfileValues (){
+profileNameField.value = profileName.textContent; // заполнение формы из DOM
+profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
+}
+
+// начальное заполнение полей профиля из DOM поможет корректно переключить состояние кнопки сабмит
+fillInitialProfileValues ();
 
 // начальное заполнение карточек из массива черз обход функцией forEach
 initialCards.forEach(function (card){

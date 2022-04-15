@@ -36,8 +36,10 @@
       <div class="popup__container">
         <h3 class="popup__title">Редактировать профиль</h3>
         <form action="#" name="profile_form" class="popup__form popup__form-edit-profile">
-            <input type="text" class="popup__input" name="valueProfileName" placeholder="Имя" title="Имя" required = "required" id="profile_name_field">
-            <input type="text" class="popup__input" name="valueProfileEmployment" placeholder="Занятие" title="Занятие" id="profile_employment_field">
+            <input type="text" id="profile_name_field" class="popup__input" name="valueProfileName" placeholder="Имя" title="Имя" required minlength="2" maxlength="40">
+            <span id="profile_name_field-error" class="popup__input-error"></span>
+            <input type="text" id="profile_employment_field" class="popup__input" name="valueProfileEmployment" placeholder="Занятие" title="Занятие" required minlength="2" maxlength="200">
+            <span id="profile_employment_field-error" class="popup__input-error"></span>
           <button type="submit" class="popup__button-save" title="Сохранить профиль" aria-label="Сохранить профиль">Сохранить</button>
         </form>
         <button type="button" class="popup__close popup__close-profile" title="Закрыть" aria-label="Закрыть"></button>
@@ -47,8 +49,10 @@
       <div class="popup__container">
         <h3 class="popup__title">Новое место</h3>
         <form action="#" name="add_place_form" class="popup__form popup__form-add-place">
-            <input type="text" class="popup__input" name="valuePlaceName" placeholder="Название" title="Название места" required = "required" id="place_name_field">
-            <input type="url" class="popup__input" name="valueLinkImage" placeholder="Ссылка на картинку" title="Ссылка на картинку" required = "required" id="place_link_image">
+            <input type="text" id="place_name_field" class="popup__input" name="valuePlaceName" placeholder="Название" title="Название места" required minlength="2" maxlength="30">
+            <span id="place_name_field-error" class="popup__input-error"></span>
+            <input type="url" id="place_link_image" class="popup__input" name="valueLinkImage" placeholder="Ссылка на картинку" title="Ссылка на картинку" required = "required">
+            <span id="place_link_image-error" class="popup__input-error"></span>
           <button type="submit" class="popup__button-save" title="Создать место" aria-label="Создать место">Создать</button>
         </form>
         <button type="button" class="popup__close popup__close-add-place" title="Закрыть" aria-label="Закрыть"></button>
@@ -76,5 +80,6 @@
     </template>
     <script src="./scripts/cards.js"></script>
     <script src="./scripts/index.js"></script>
+    <script src="./scripts/validate.js"></script>
   </body>
 </html>
