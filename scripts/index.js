@@ -40,6 +40,8 @@ function openPopupEditProfile() {
 // открытие попап с параметром
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible');
+  enableValidation(); // валидация после открытия формы. если не нужна начальная проверка полей при открытии попап, валидацию можно запускать из validate.js // iwang
+
 }
 // Спрятать попап
 function hidePopupWindow(openedPopup) {
@@ -107,9 +109,11 @@ function fillInitialProfileValues (){
 profileNameField.value = profileName.textContent; // заполнение формы из DOM
 profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
 }
-
+/*
 // начальное заполнение полей профиля из DOM поможет корректно переключить состояние кнопки сабмит
+можно удалить, нет необходимости, валидация запускается после открытия и заполнения формы // iwang
 fillInitialProfileValues ();
+*/
 
 // начальное заполнение карточек из массива черз обход функцией forEach
 initialCards.forEach(function (card){
