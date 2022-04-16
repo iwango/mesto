@@ -1,5 +1,6 @@
 //константы
 // попап окна для управления видимостью с помощью добавления отдельных селектора
+const popupOverlay = document.querySelector('.popup'); // оверлей попап
 const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
 const popupAddPlace = document.querySelector('.popup_add-place'); // место
 const popupShowImage = document.querySelector('.popup_show-image'); // картинка
@@ -30,6 +31,9 @@ const placeLinkImageField = popupFormAddPlace.querySelector('#place_link_image')
 const elementsList = document.querySelector('.elements__list');
 // шаблон для карточек
 const placeTemplate = document.querySelector('#place-template').content;
+
+let esqPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape
+
 // Функции
 //попап окна
 // редактировать профиль
@@ -37,14 +41,26 @@ function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
 }
-// открытие попап с параметром
+// открытие попап с параметром, закрытие по клику на оверлей, прослушка для esqape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible');
+  openablePopup.addEventListener('click', (evt) => hidePopupWindow(evt.target)); // прослушка оверлея и закрытие при клике
+  esqPopup = openablePopup; // переменная для передачи окна для закрытия по esq
+  document.addEventListener('keydown', checkKeydown); // прослушка клавиш
   enableValidation(); // валидация после открытия формы. если не нужна начальная проверка полей при открытии попап, валидацию можно запускать из validate.js // iwang
 
 }
-// Спрятать попап
+// проверка нажатий клавиш и реагирование по esq
+function checkKeydown (evt) {
+  if (evt.key === 'Escape') {
+    hidePopupWindow(esqPopup);
+  }
+}
+
+
+// Спрятать попап и убрать событие прослушки esqape
 function hidePopupWindow(openedPopup) {
+  document.removeEventListener('keydown', checkKeydown);
   openedPopup.classList.remove('popup__visible'); // выбор открытого видимого окна параметром и удаление .popup__visible для невидимости
 }
 // Обработка Submit
