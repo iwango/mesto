@@ -54,16 +54,26 @@ function openPopupEditProfile() {
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
-  // установка фокуса на форму, можно и в инпут но если он пустой, то стирается placeholder  не понятно что надо вводить в поле
-  const openedForm = openablePopup.querySelector('.popup__form'); // форма в открываемом попап
-  openedForm.tabIndex = -1; // табиндекс для возможности установки фокуса
-  setTimeout(() => openablePopup.querySelector('.popup__form').focus(), 100); // установка, с задержкой для появления эллемента
+  focusOnFormOrClose(openablePopup); // проверить галичие формы и сфокусировать
   escPopup = openablePopup; // переменная для передачи окна для закрытия по esc
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
   enableValidation(validationSettings); // валидация после открытия формы. если не нужна начальная проверка полей при открытии попап, валидацию можно запускать из validate.js // iwang
-
 }
+
+// установка фокуса на форму или кнопку закрыть, можно и в инпут но если он пустой, то стирается placeholder  не понятно что надо вводить в поле
+function focusOnFormOrClose (openablePopup) {
+  const focusElement = function (){
+    if (openablePopup.querySelector('.popup__form')) {
+      return openablePopup.querySelector('.popup__form'); // если есть форма то возвращает форму
+    } else {
+      return openablePopup.querySelector('.popup__close'); // если нет, то возвращает кнопку закрыть
+    }
+  }
+  focusElement().tabIndex = -1; // табиндекс для возможности установки фокуса
+  setTimeout(() => focusElement().focus(), 100); // установка, с задержкой для появления эллемента
+}
+
 // проверка где клик, если на оверлее попап, то закрыть окно
 function checkClick (evt) {
   if (evt.target === evt.currentTarget) {
@@ -77,7 +87,6 @@ function checkKeydown (evt) {
     hidePopupWindow(escPopup);
   }
 }
-
 
 // Спрятать попап и убрать событие прослушки escape
 function hidePopupWindow(openedPopup) {
