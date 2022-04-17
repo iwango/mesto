@@ -112,7 +112,9 @@ function submitFormAddPlace(evt) {
   }
   placeNameField.value = ''; // очистка значений  в форме
   placeLinkImageField.value = ''; // очистка значений в форме
-  renderElement(card); // передать значения для отрисовки DOM
+  const placeElement = creatCard(card);
+  console.log(placeElement);
+  renderElement(placeElement); // передать значения для отрисовки DOM
   hidePopupWindow(popupAddPlace); // Спрятать окна
 }
 // переключение состояния лайка
@@ -130,19 +132,25 @@ function showPopupPlaceImage(evt) {
   popupFigureCaption.textContent = evt.target.alt; // описание из alt нажатой картинки
   openPopup(popupShowImage); // видимость
 }
-// Заполнение карточки, вывод в DOM и событие для лайка
-function renderElement(card) {
-  const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клонирование карточки из шаблона
-  placeElement.querySelector('.place__img').alt = card.name; // альтернативное описание места
-  placeElement.querySelector('.place__title').textContent = card.name; // описание места
-  placeElement.querySelector('.place__img').src = card.link; // ссылка на изображение
+// Заполненую карточку с событиями, выводим в DOM
+function renderElement(placeElement) {
   elementsList.prepend(placeElement); // вывод в DOM заполненой карточки
+}
+ // log block delete this ~~~~~~ iwang
+function creatCard (card) {
+  const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клонирование карточки из шаблона
+  placeElement.querySelector('.place__title').textContent = card.name; // описание места
+  placeElement.querySelector('.place__img').alt = card.name; // альтернативное описание места
+  placeElement.querySelector('.place__img').src = card.link; // ссылка на изображение
   // добавление индивидуальных событий для каждой карточки
   placeElement.querySelector('.place__like-button').addEventListener('click', switchLikeIcon); // событие для лайка
   placeElement.querySelector('.place__delete-button').addEventListener('click', deleteCard); // событие для корзины
   placeElement.querySelector('.place__img').addEventListener('click', showPopupPlaceImage); // событие для картинки
-
+  return placeElement; // возвращаем карточку с событиями готовую к отправки в DOM ли в массив
 }
+
+ // log block delete this ~~~~~~ iwang
+
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
 placeAddButton.addEventListener('click', () => openPopup(popupAddPlace)); // добавить место
@@ -165,10 +173,11 @@ fillInitialProfileValues ();
 
 // начальное заполнение карточек из массива черз обход функцией forEach
 initialCards.forEach(function (card){
-  renderElement(card); // передать каждую карточку для отрисовки DOM
+  const placeElement = creatCard(card); // сформировать из каждого элемента массива отдельную карточку с событиями
+  renderElement(placeElement); // Отправить готовую карточку для отрисовки DOM
 });
 
-// После загрузки DOM ерева добавление попап окнам display flex. если сразу добавить то отрисовывается анимация при загрузке страницы
+// После загрузки DOM дерева добавление попап окнам display flex. если сразу добавить то отрисовывается анимация при загрузке страницы
 document.addEventListener("DOMContentLoaded", function(){
   popupEditProfile.classList.add('popup_opened');
   popupAddPlace.classList.add('popup_opened');
