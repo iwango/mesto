@@ -117,7 +117,8 @@ function deleteCard(evt) {
 // попап с картинкой
 function showPopupPlaceImage(evt) {
   popupFigureImage.src = evt.target.src; // адрес картинки из src нажатой каринки
-  popupFigureCaption.textContent = evt.target.alt; // описание из alt ажатой картинки
+  popupFigureImage.alt = evt.target.alt; // описание из alt нажатой картинки
+  popupFigureCaption.textContent = evt.target.alt; // описание из alt нажатой картинки
   openPopup(popupShowImage); // видимость
 }
 // Заполнение карточки, вывод в DOM и событие для лайка

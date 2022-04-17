@@ -2,3 +2,7 @@
   width: 282px;
   height: 282px;
 }
+
+.place__img:hover {
+  cursor: zoom-in;
+}
