@@ -42,12 +42,9 @@ const toggleButtonState = function (inputList, buttonElement) {
   if (!hasInvalidInput(inputList)) {
     buttonElement.classList.add(validationSettings.inactiveButtonClass); // добавление неактивного состояния
     buttonElement.disabled = true; // выключение кнопки
-    console.log('нопка выключена?', buttonElement.disabled); // log block delete this ~~~~~~ iwang
   } else {
     buttonElement.classList.remove(validationSettings.inactiveButtonClass); // удаление неактивного состояния
     buttonElement.disabled = false; // включение кнопки
-    console.log('нопка выключена?', buttonElement.disabled); // log block delete this ~~~~~~ iwang
-
   }
 }
 // проверка полей на валидность

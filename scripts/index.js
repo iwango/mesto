@@ -10,7 +10,7 @@ const validationSettings = {
   autoFillFormName: 'profile_form'
 }
 // попап окна для управления видимостью с помощью добавления отдельных селектора
-const popupOverlay = document.querySelector('.popup'); // оверлей попап
+// const popupOverlay = document.querySelector('.popup'); // оверлей попап
 const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
 const popupAddPlace = document.querySelector('.popup_add-place'); // место
 const popupShowImage = document.querySelector('.popup_show-image'); // картинка
@@ -51,17 +51,20 @@ function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
 }
-// открытие попап с параметром, закрытие по клику на оверлей, прослушка для escape
+// открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
-  openablePopup.classList.add('popup__visible');
-
+  openablePopup.classList.add('popup__visible'); // включаем попап
+  // установка фокуса на форму, можно и в инпут но если он пустой, то стирается placeholder  не понятно что надо вводить в поле
+  const openedForm = openablePopup.querySelector('.popup__form'); // форма в открываемом попап
+  openedForm.tabIndex = -1; // табиндекс для возможности установки фокуса
+  setTimeout(() => openablePopup.querySelector('.popup__form').focus(), 100); // установка, с задержкой для появления эллемента
   escPopup = openablePopup; // переменная для передачи окна для закрытия по esc
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
   enableValidation(validationSettings); // валидация после открытия формы. если не нужна начальная проверка полей при открытии попап, валидацию можно запускать из validate.js // iwang
 
 }
-// проверка где клик
+// проверка где клик, если на оверлее попап, то закрыть окно
 function checkClick (evt) {
   if (evt.target === evt.currentTarget) {
     hidePopupWindow(escPopup)
