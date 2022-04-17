@@ -1,4 +1,14 @@
 //константы
+// Настройки для валидации список селекторов и классов
+const validationSettings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button-save',
+  inactiveButtonClass: 'popup__button-save_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorVisibleClass: 'popup__input-error_visible',
+  autoFillFormName: 'profile_form'
+}
 // попап окна для управления видимостью с помощью добавления отдельных селектора
 const popupOverlay = document.querySelector('.popup'); // оверлей попап
 const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
@@ -32,7 +42,7 @@ const elementsList = document.querySelector('.elements__list');
 // шаблон для карточек
 const placeTemplate = document.querySelector('#place-template').content;
 
-let esqPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape
+let escPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape
 
 // Функции
 //попап окна
@@ -41,25 +51,34 @@ function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
 }
-// открытие попап с параметром, закрытие по клику на оверлей, прослушка для esqape
+// открытие попап с параметром, закрытие по клику на оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible');
-  openablePopup.addEventListener('click', (evt) => hidePopupWindow(evt.target)); // прослушка оверлея и закрытие при клике
-  esqPopup = openablePopup; // переменная для передачи окна для закрытия по esq
+
+  escPopup = openablePopup; // переменная для передачи окна для закрытия по esc
+  openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
-  enableValidation(); // валидация после открытия формы. если не нужна начальная проверка полей при открытии попап, валидацию можно запускать из validate.js // iwang
+  enableValidation(validationSettings); // валидация после открытия формы. если не нужна начальная проверка полей при открытии попап, валидацию можно запускать из validate.js // iwang
 
 }
-// проверка нажатий клавиш и реагирование по esq
+// проверка где клик
+function checkClick (evt) {
+  if (evt.target === evt.currentTarget) {
+    hidePopupWindow(escPopup)
+  }
+}
+
+// проверка нажатий клавиш и реагирование по esc
 function checkKeydown (evt) {
   if (evt.key === 'Escape') {
-    hidePopupWindow(esqPopup);
+    hidePopupWindow(escPopup);
   }
 }
 
 
-// Спрятать попап и убрать событие прослушки esqape
+// Спрятать попап и убрать событие прослушки escape
 function hidePopupWindow(openedPopup) {
+  openedPopup.removeEventListener('click', checkClick);
   document.removeEventListener('keydown', checkKeydown);
   openedPopup.classList.remove('popup__visible'); // выбор открытого видимого окна параметром и удаление .popup__visible для невидимости
 }

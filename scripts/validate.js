@@ -1,7 +1,7 @@
 // включение валидации
-const enableValidation = () =>{
-  // массив всех форм из документа по классу popup__form
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
+const enableValidation = (validationSettings) =>{
+  // массив всех форм из документа по ключу
+  const formList = Array.from(document.querySelectorAll(validationSettings.formSelector));
   // прослушка для каждой формы
   formList.forEach((formElement) => {
     setEventListeners(formElement);
@@ -10,8 +10,8 @@ const enableValidation = () =>{
 // прослушка инпутов
 const setEventListeners = (formElement) => {
   // массивы инпутов
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__button-save');
+  const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
+  const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
   // начальная установка состояния кнопки сабмит
   toggleButtonState(inputList, buttonElement);
    /*
@@ -23,7 +23,7 @@ const setEventListeners = (formElement) => {
    здесь и в других местах если увидите текст iwang это ник, пишу для себя как закладку что бы проще было найти то что исправить или переделать
    */
   inputList.forEach((inputElement) => {
-    if (formElement.name === 'profile_form') {
+    if (formElement.name === validationSettings.autoFillFormName) {
       checkInputValidity(formElement, inputElement);
     }
     }
@@ -40,9 +40,9 @@ const setEventListeners = (formElement) => {
 const toggleButtonState = function (inputList, buttonElement) {
   // проверка общей валидности инпутов на момент вызова
   if (!hasInvalidInput(inputList)) {
-    buttonElement.classList.add('popup__button-save_disabled'); // добавление неактивного состояния
+    buttonElement.classList.add(validationSettings.inactiveButtonClass); // добавление неактивного состояния
   } else {
-    buttonElement.classList.remove('popup__button-save_disabled'); // удаление неактивного состояния
+    buttonElement.classList.remove(validationSettings.inactiveButtonClass); // удаление неактивного состояния
   }
 }
 // проверка полей на валидность
@@ -63,16 +63,16 @@ const checkInputValidity = (formElement, inputElement) => {
 // показ ошибки
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`); // спан с ошибкой
-  inputElement.classList.add('popup__input_type_error'); // добавление класса ошибки к полю инпут
+  inputElement.classList.add(validationSettings.inputErrorClass); // добавление класса ошибки к полю инпут
   errorElement.textContent = errorMessage; // заполнение спана с ошибкой
-  errorElement.classList.add('popup__input-error_visible'); // показ спана с ошибкой
+  errorElement.classList.add(validationSettings.errorVisibleClass); // показ спана с ошибкой
 }
 // скрытие ошибки
 const hideInputError = (formElement, inputElement) => {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`); // спан с ошибкой
-  inputElement.classList.remove('popup__input_type_error'); // удаление класса ошибки в поле инпут
+  inputElement.classList.remove(validationSettings.inputErrorClass); // удаление класса ошибки в поле инпут
   errorElement.textContent = ''; // очистка заполнения спана с ошибкой
-  errorElement.classList.remove('popup__input-error_visible'); // прятать спан с ошибкой
+  errorElement.classList.remove(validationSettings.errorVisibleClass); // прятать спан с ошибкой
 }
 // включение валидации
 // enableValidation(); // сейчас валидация запускается при открытии попап из index.js  // log block delete this ~~~~~~ iwang
