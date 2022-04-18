@@ -7,9 +7,11 @@ const enableValidation = (validationSettings) =>{
     setEventListeners(formElement);
   });
 }
+//список инпутов в форме
 const getInputList = (formElement) => {
   return Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
 }
+  // кнопка в форме
 const getSubmitButton = (formElement) => {
   return formElement.querySelector(validationSettings.submitButtonSelector);
 }
@@ -78,4 +80,4 @@ const hideInputError = (formElement, inputElement) => {
   errorElement.classList.remove(validationSettings.errorVisibleClass); // прятать спан с ошибкой
 }
 // включение валидации
-enableValidation(validationSettings); // сейчас валидация запускается при открытии попап из index.js  // log block delete this ~~~~~~ iwang
+enableValidation(validationSettings); // запуск валидации

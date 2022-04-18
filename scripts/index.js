@@ -91,12 +91,31 @@ function checkKeydown (evt) {
     hidePopupWindow(escPopup);
   }
 }
-
+// Сброс формы и полей ошибок при закрытии или отправке формы
+function resetForm(openedPopup) {
+  const popupForm = openedPopup.querySelector('.popup__form');
+  // проверка если есть форма то очищаем если нет то пропуск
+  if (popupForm) {
+    // удаление класса с ошибкой для инпутов
+    const inputError = Array.from(popupForm.querySelectorAll('.popup__input_type_error'));
+    inputError.forEach((errorElement) => {
+      errorElement.classList.remove('popup__input_type_error');
+    });
+  // очистка спанов с ошибкой и удаление видимости
+    const inputSpanError = Array.from(popupForm.querySelectorAll('.popup__input-error_visible'));
+    inputSpanError.forEach((errorElement) => {
+      errorElement.classList.remove('popup__input-error_visible');
+      errorElement.textContent = '';
+    })
+    popupForm.reset(); // сброс формы
+  }
+}
 // Спрятать попап и убрать событие прослушки escape
 function hidePopupWindow(openedPopup) {
   openedPopup.removeEventListener('click', checkClick);
   document.removeEventListener('keydown', checkKeydown);
   openedPopup.classList.remove('popup__visible'); // выбор открытого видимого окна параметром и удаление .popup__visible для невидимости
+  resetForm(openedPopup);
 }
 // Обработка Submit
 //профиль
@@ -114,8 +133,6 @@ function submitFormAddPlace(evt) {
     name: placeNameField.value,
     link: placeLinkImageField.value
   }
-  placeNameField.value = ''; // очистка значений  в форме
-  placeLinkImageField.value = ''; // очистка значений в форме
   const placeElement = creatCard(card); // сохдать новую карточку
   renderElement(placeElement); // передать значения для отрисовки DOM
   hidePopupWindow(popupAddPlace); // Спрятать окна
@@ -166,8 +183,6 @@ function fillInitialProfileValues (){
 profileNameField.value = profileName.textContent; // заполнение формы из DOM
 profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
 }
-// начальное заполнение полей профиля из DOM поможет корректно переключить состояние кнопки сабмит
-// fillInitialProfileValues (); // iwang
 
 // начальное заполнение карточек из массива черз обход функцией forEach
 initialCards.forEach(function (card){
