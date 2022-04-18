@@ -51,15 +51,17 @@ function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
   checkFormForNewPoup (popupEditProfile);
+  focusOnFormOrClose(popupEditProfile); // проверить наличие формы и сфокусировать
+
 }
 function openPopupAddPlace() {
   openPopup(popupAddPlace);
   checkFormForNewPoup(popupAddPlace);
+  focusOnFormOrClose(popupAddPlace); // проверить наличие формы и сфокусировать
 }
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
-  focusOnFormOrClose(openablePopup); // проверить галичие формы и сфокусировать
   escPopup = openablePopup; // переменная для передачи окна для закрытия по esc
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
@@ -151,6 +153,7 @@ function showPopupPlaceImage(evt) {
   popupFigureImage.alt = evt.target.alt; // описание из alt нажатой картинки
   popupFigureCaption.textContent = evt.target.alt; // описание из alt нажатой картинки
   openPopup(popupShowImage); // видимость
+  focusOnFormOrClose(popupShowImage);
 }
 // Заполненую карточку с событиями, выводим в DOM
 function renderElement(placeElement) {
