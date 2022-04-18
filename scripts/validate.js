@@ -7,27 +7,23 @@ const enableValidation = (validationSettings) =>{
     setEventListeners(formElement);
   });
 }
+// проверка формы при открытии
+const checkFormForNewPoup = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
+  const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
+  if (formElement.querySelector(validationSettings.autoFillFormName)) {
+  inputList.forEach((inputElement) => {
+    checkInputValidity(formElement, inputElement);
+  });}
+  toggleButtonState(inputList, buttonElement);
+}
+
 // прослушка инпутов
 const setEventListeners = (formElement) => {
   // массивы инпутов
   const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
   const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
-  // начальная установка состояния кнопки сабмит
-  toggleButtonState(inputList, buttonElement);
-   /*
-   начальная провекра полей для профиля.
-   это в задании проекта не уточнялось, но всплыли такие особенности
-   без этой проверки после закрытия попап с пустыми полями и повторного открытия, несмотря на заполненые поля показывал предупреждение.
-   если проверить обе формы без условия, то уже попап с добавлением места открывается с предупреждением, так как поля пустые.
-   как вариант спаны с ошибкой можно очищать при закрытии попап
-   здесь и в других местах если увидите текст iwang это ник, пишу для себя как закладку что бы проще было найти то что исправить или переделать
-   */
-  inputList.forEach((inputElement) => {
-    if (formElement.name === validationSettings.autoFillFormName) {
-      checkInputValidity(formElement, inputElement);
-    }
-    }
-  )
+
   // прослушка ввода в инпут
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {

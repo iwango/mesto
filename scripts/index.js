@@ -7,7 +7,7 @@ const validationSettings = {
   inactiveButtonClass: 'popup__button-save_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorVisibleClass: 'popup__input-error_visible',
-  autoFillFormName: 'profile_form'
+  autoFillFormName: '.popup__form-edit-profile'
 }
 // попап окна для управления видимостью с помощью добавления отдельных селектора
 // const popupOverlay = document.querySelector('.popup'); // оверлей попап
@@ -50,6 +50,11 @@ let escPopup; // Глобальная переменная для передач
 function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
+  checkFormForNewPoup (popupEditProfile);
+}
+function openPopupAddPlace() {
+  openPopup(popupAddPlace);
+  checkFormForNewPoup(popupAddPlace);
 }
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
@@ -149,7 +154,7 @@ function creatCard (card) {
 
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
-placeAddButton.addEventListener('click', () => openPopup(popupAddPlace)); // добавить место
+placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
 closeProfileButton.addEventListener('click', () => hidePopupWindow(popupEditProfile)); //спрятать окно редактировать профиль
 closeAddPlaceButton.addEventListener('click', () => hidePopupWindow(popupAddPlace)); //спрятать окно место
 closeShowImageButton.addEventListener('click', () => hidePopupWindow(popupShowImage)); //спрятать окно картинки
