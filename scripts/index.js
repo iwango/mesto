@@ -58,7 +58,6 @@ function openPopup(openablePopup) {
   escPopup = openablePopup; // переменная для передачи окна для закрытия по esc
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
-  enableValidation(validationSettings); // валидация после открытия формы. если не нужна начальная проверка полей при открытии попап, валидацию можно запускать из validate.js // iwang
 }
 
 // установка фокуса на форму или кнопку закрыть, можно и в инпут но если он пустой, то стирается placeholder  не понятно что надо вводить в поле
@@ -112,8 +111,7 @@ function submitFormAddPlace(evt) {
   }
   placeNameField.value = ''; // очистка значений  в форме
   placeLinkImageField.value = ''; // очистка значений в форме
-  const placeElement = creatCard(card);
-  console.log(placeElement);
+  const placeElement = creatCard(card); // сохдать новую карточку
   renderElement(placeElement); // передать значения для отрисовки DOM
   hidePopupWindow(popupAddPlace); // Спрятать окна
 }
@@ -136,7 +134,7 @@ function showPopupPlaceImage(evt) {
 function renderElement(placeElement) {
   elementsList.prepend(placeElement); // вывод в DOM заполненой карточки
 }
- // log block delete this ~~~~~~ iwang
+ // Создание новой карточки места со всеми событиями
 function creatCard (card) {
   const placeElement = placeTemplate.querySelector('.elements__item').cloneNode(true); // клонирование карточки из шаблона
   placeElement.querySelector('.place__title').textContent = card.name; // описание места
@@ -148,8 +146,6 @@ function creatCard (card) {
   placeElement.querySelector('.place__img').addEventListener('click', showPopupPlaceImage); // событие для картинки
   return placeElement; // возвращаем карточку с событиями готовую к отправки в DOM ли в массив
 }
-
- // log block delete this ~~~~~~ iwang
 
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
@@ -165,11 +161,8 @@ function fillInitialProfileValues (){
 profileNameField.value = profileName.textContent; // заполнение формы из DOM
 profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
 }
-/*
 // начальное заполнение полей профиля из DOM поможет корректно переключить состояние кнопки сабмит
-можно удалить, нет необходимости, валидация запускается после открытия и заполнения формы // iwang
-fillInitialProfileValues ();
-*/
+// fillInitialProfileValues (); // iwang
 
 // начальное заполнение карточек из массива черз обход функцией forEach
 initialCards.forEach(function (card){

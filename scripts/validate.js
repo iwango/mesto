@@ -77,4 +77,4 @@ const hideInputError = (formElement, inputElement) => {
   errorElement.classList.remove(validationSettings.errorVisibleClass); // прятать спан с ошибкой
 }
 // включение валидации
-// enableValidation(); // сейчас валидация запускается при открытии попап из index.js  // log block delete this ~~~~~~ iwang
+enableValidation(validationSettings); // сейчас валидация запускается при открытии попап из index.js  // log block delete this ~~~~~~ iwang
