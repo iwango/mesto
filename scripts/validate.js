@@ -7,10 +7,17 @@ const enableValidation = (validationSettings) =>{
     setEventListeners(formElement);
   });
 }
+const getInputList = (formElement) => {
+  return Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
+}
+const getSubmitButton = (formElement) => {
+  return formElement.querySelector(validationSettings.submitButtonSelector);
+}
+
 // проверка формы при открытии
 const checkFormForNewPoup = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
-  const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
+  const inputList = getInputList(formElement);
+  const buttonElement = getSubmitButton(formElement);
   if (formElement.querySelector(validationSettings.autoFillFormName)) {
   inputList.forEach((inputElement) => {
     checkInputValidity(formElement, inputElement);
@@ -18,12 +25,10 @@ const checkFormForNewPoup = (formElement) => {
   toggleButtonState(inputList, buttonElement);
 }
 
-// прослушка инпутов
+// прослушка инпутов и переключение состояния
 const setEventListeners = (formElement) => {
-  // массивы инпутов
-  const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
-  const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
-
+  const inputList = getInputList(formElement);
+  const buttonElement = getSubmitButton(formElement);
   // прослушка ввода в инпут
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
