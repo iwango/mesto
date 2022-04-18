@@ -51,13 +51,15 @@ function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
   checkFormForNewPoup (popupEditProfile);
-  focusOnFormOrClose(popupEditProfile); // проверить наличие формы и сфокусировать
+  // проверить наличие формы и сфокусировать
+  focusOnFormOrClose(popupEditProfile); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 
 }
 function openPopupAddPlace() {
   openPopup(popupAddPlace);
   checkFormForNewPoup(popupAddPlace);
-  focusOnFormOrClose(popupAddPlace); // проверить наличие формы и сфокусировать
+  // проверить наличие формы и сфокусировать
+  focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 }
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
@@ -153,7 +155,8 @@ function showPopupPlaceImage(evt) {
   popupFigureImage.alt = evt.target.alt; // описание из alt нажатой картинки
   popupFigureCaption.textContent = evt.target.alt; // описание из alt нажатой картинки
   openPopup(popupShowImage); // видимость
-  focusOnFormOrClose(popupShowImage);
+  // проверить наличие формы и сфокусировать
+  focusOnFormOrClose(popupShowImage); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 }
 // Заполненую карточку с событиями, выводим в DOM
 function renderElement(placeElement) {
