@@ -1,11 +1,9 @@
-import {enableValidation, checkFormForNewPoup} from "./validate.js";
 import {initialCards} from "./cards.js";
 import {Card} from "./Card.js";
-
+import {FormValidator} from "./FormValidator.js";
 
 //константы
 // Настройки для валидации список селекторов и классов
-
 const validationSettings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -23,7 +21,6 @@ const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); /
 const popupFigureCaption = popupShowImage.querySelector('.popup__figure-caption'); // описание
 
 // попап окна для управления видимостью с помощью добавления отдельных селектора
-// const popupOverlay = document.querySelector('.popup'); // оверлей попап
 const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
 const popupAddPlace = document.querySelector('.popup_add-place'); // место
 // кнопоки для открытия и закрытия окон
@@ -34,7 +31,6 @@ const closeAddPlaceButton = popupAddPlace.querySelector('.popup__close-add-place
 // строки из HTML для редактирования профиля
 const profileName = document.querySelector('.profile__name');
 const profileEmployment = document.querySelector('.profile__employment');
-// данные для попап картинки
 // форма для редактирования профиля
 const popupFormEditProfile = popupEditProfile.querySelector('.popup__form-edit-profile');
 // форма для редактирования места
@@ -48,8 +44,6 @@ const placeNameField = popupFormAddPlace.querySelector('#place_name_field');
 const placeLinkImageField = popupFormAddPlace.querySelector('#place_link_image');
 // список мест
 const elementsList = document.querySelector('.elements__list');
-// шаблон для карточек
-const placeTemplate = document.querySelector('#place-template').content;
 
 let escPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape
 
@@ -59,14 +53,19 @@ let escPopup; // Глобальная переменная для передач
 function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
-  checkFormForNewPoup (popupEditProfile);
+  checkFormForNewPopup (popupEditProfile);
   // проверить наличие формы и сфокусировать
   focusOnFormOrClose(popupEditProfile); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
-
 }
+
+const checkFormForNewPopup = (formElement) => {
+  const validateNewPopup = new FormValidator(validationSettings, formElement);
+  validateNewPopup.toggleButtonExternal();
+}
+
 function openPopupAddPlace() {
   openPopup(popupAddPlace);
-  checkFormForNewPoup(popupAddPlace);
+  checkFormForNewPopup(popupAddPlace);
   // проверить наличие формы и сфокусировать
   focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 }
@@ -187,7 +186,12 @@ initialCards.forEach((item) => {
   renderElement(cardElement);
 });
 
-enableValidation(validationSettings); // запуск валидации
-
 // экспорт переменных и функций для модуля Card
-export {closeShowImageButton, popupFigureImage, popupFigureCaption, popupShowImage, hidePopupWindow, openPopup, validationSettings}
+export {closeShowImageButton, popupFigureImage, popupFigureCaption, popupShowImage, hidePopupWindow, openPopup, validationSettings};
+
+// Валидация форм
+const formList = Array.from(document.querySelectorAll(validationSettings.formSelector));// ассив форм в документе
+formList.forEach((item) => {
+  const validate = new FormValidator(validationSettings, item);
+  validate.enableValidation();
+});
