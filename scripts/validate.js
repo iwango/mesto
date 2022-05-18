@@ -1,5 +1,7 @@
+import {validationSettings} from "./index.js";
+
 // включение валидации
-const enableValidation = (validationSettings) =>{
+export const enableValidation = (validationSettings) =>{
   // массив всех форм из документа по ключу
   const formList = Array.from(document.querySelectorAll(validationSettings.formSelector));
   // прослушка для каждой формы
@@ -17,7 +19,7 @@ const getSubmitButton = (formElement) => {
 }
 
 // проверка формы при открытии
-const checkFormForNewPoup = (formElement) => {
+export const checkFormForNewPoup = (formElement) => {
   const inputList = getInputList(formElement);
   const buttonElement = getSubmitButton(formElement);
   if (formElement.querySelector(validationSettings.autoFillFormName)) {
@@ -80,4 +82,4 @@ const hideInputError = (formElement, inputElement) => {
   errorElement.classList.remove(validationSettings.errorVisibleClass); // прятать спан с ошибкой
 }
 // включение валидации
-enableValidation(validationSettings); // запуск валидации
+// enableValidation(validationSettings); // запуск валидации
