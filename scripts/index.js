@@ -55,14 +55,13 @@ const elementsList = document.querySelector('.elements__list');
 function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
-  checkFormForNewPopup (popupEditProfile);
+  profileValidation.toggleButtonExternal(); // валидация полей профиля после открытия
   // проверить наличие формы и сфокусировать
   focusOnFormOrClose(popupEditProfile); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 }
 
 const checkFormForNewPopup = (formElement) => {
-  const validateNewPopup = new FormValidator(validationSettings, formElement); //REVIEW error 62
-  validateNewPopup.toggleButtonExternal();
+  console.log('Delete this function');
 }
 
 function openPopupAddPlace() {
