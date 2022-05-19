@@ -55,18 +55,14 @@ const elementsList = document.querySelector('.elements__list');
 function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
-  profileValidation.toggleButtonExternal(); // валидация полей профиля после открытия
+  profileValidation.toggleButtonExternal(); // валидация полей профиля после открытия и установка состояния кнопки
   // проверить наличие формы и сфокусировать
   focusOnFormOrClose(popupEditProfile); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 }
 
-const checkFormForNewPopup = (formElement) => {
-  console.log('Delete this function');
-}
-
 function openPopupAddPlace() {
   openPopup(popupAddPlace);
-  checkFormForNewPopup(popupAddPlace); //REVIEW error 68
+  newCardValidation.toggleButtonExternal(); // установка состояния кнопки при открытии
   // проверить наличие формы и сфокусировать
   focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 }
