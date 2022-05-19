@@ -45,7 +45,7 @@ const placeLinkImageField = popupFormAddPlace.querySelector('#place_link_image')
 // список мест
 const elementsList = document.querySelector('.elements__list');
 
-let escPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape
+// let escPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // Функции
 //попап окна
@@ -72,7 +72,7 @@ function openPopupAddPlace() {
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
-  escPopup = openablePopup; // переменная для передачи окна для закрытия по esc
+  // escPopup = openablePopup; // переменная для передачи окна для закрытия по esc // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
 }
@@ -93,14 +93,14 @@ function focusOnFormOrClose (openablePopup) {
 // проверка где клик, если на оверлее попап, то закрыть окно
 function checkClick (evt) {
   if (evt.target === evt.currentTarget) {
-    hidePopupWindow(escPopup)
+    hidePopupWindow(evt.target);
   }
 }
-
-// проверка нажатий клавиш и реагирование по esc
+// проверка нажатий клавиш и реагирование по esc // log block delete this ~~~~~~  <<<<<<<<<<<<<<<<<<< удалить добавить отступ выше. сдвинул для легкого поиска ошибок // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<
 function checkKeydown (evt) {
   if (evt.key === 'Escape') {
-    hidePopupWindow(escPopup);
+    const openedPopup = document.querySelector('.popup__visible');
+    hidePopupWindow(openedPopup);
   }
 }
 // Сброс формы и полей ошибок при закрытии или отправке формы
