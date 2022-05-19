@@ -11,7 +11,9 @@ const validationSettings = {
   inactiveButtonClass: 'popup__button-save_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorVisibleClass: 'popup__input-error_visible',
-  autoFillFormName: '.popup__form-edit-profile'
+  autoFillFormName: '.popup__form-edit-profile',
+  formEditProfile:  '.popup__form-edit-profile',
+  formAddCard: '.popup__form-add-place'
 }
 
 // переменные для модуля Card
@@ -45,7 +47,7 @@ const placeLinkImageField = popupFormAddPlace.querySelector('#place_link_image')
 // список мест
 const elementsList = document.querySelector('.elements__list');
 
-// let escPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+// let escPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< // todo delet this
 
 // Функции
 //попап окна
@@ -59,20 +61,20 @@ function openPopupEditProfile() {
 }
 
 const checkFormForNewPopup = (formElement) => {
-  const validateNewPopup = new FormValidator(validationSettings, formElement);
+  const validateNewPopup = new FormValidator(validationSettings, formElement); //REVIEW error 62
   validateNewPopup.toggleButtonExternal();
 }
 
 function openPopupAddPlace() {
   openPopup(popupAddPlace);
-  checkFormForNewPopup(popupAddPlace);
+  checkFormForNewPopup(popupAddPlace); //REVIEW error 68
   // проверить наличие формы и сфокусировать
   focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
 }
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
-  // escPopup = openablePopup; // переменная для передачи окна для закрытия по esc // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  // escPopup = openablePopup; // переменная для передачи окна для закрытия по esc // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< // todo delet this
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
 }
@@ -93,20 +95,21 @@ function focusOnFormOrClose (openablePopup) {
 // проверка где клик, если на оверлее попап, то закрыть окно
 function checkClick (evt) {
   if (evt.target === evt.currentTarget) {
-    hidePopupWindow(evt.target);
+    hidePopupWindow(evt.target); //todo compleat
   }
 }
-// проверка нажатий клавиш и реагирование по esc // log block delete this ~~~~~~  <<<<<<<<<<<<<<<<<<< удалить добавить отступ выше. сдвинул для легкого поиска ошибок // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<
+
+// проверка нажатий клавиш и реагирование по esc
 function checkKeydown (evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup__visible');
-    hidePopupWindow(openedPopup);
+    hidePopupWindow(openedPopup); //todo compleat
   }
 }
-// Сброс формы и полей ошибок при закрытии или отправке формы
+// Сброс формы и полей ошибок при закрытии или отправке формы //REVIEW error 107
 function resetForm(openedPopup) {
   const popupForm = openedPopup.querySelector('.popup__form');
-  // проверка если есть форма то очищаем если нет то пропуск
+  // проверка если есть форма то очищаем если нет то пропуск //REVIEW error 110
   if (popupForm) {
     // удаление класса с ошибкой для инпутов
     const inputError = Array.from(popupForm.querySelectorAll('.popup__input_type_error'));
@@ -119,7 +122,7 @@ function resetForm(openedPopup) {
       errorElement.classList.remove('popup__input-error_visible');
       errorElement.textContent = '';
     })
-    popupForm.reset(); // сброс формы
+    popupForm.reset(); // сброс формы //REVIEW error 122
   }
 }
 // Спрятать попап и убрать событие прослушки escape
@@ -127,7 +130,7 @@ function hidePopupWindow(openedPopup) {
   openedPopup.removeEventListener('click', checkClick);
   document.removeEventListener('keydown', checkKeydown);
   openedPopup.classList.remove('popup__visible'); // выбор открытого видимого окна параметром и удаление .popup__visible для невидимости
-  resetForm(openedPopup);
+  resetForm(openedPopup); //REVIEW error 130
 }
 // Обработка Submit
 //профиль
@@ -146,7 +149,7 @@ function submitFormAddPlace(evt) {
     link: placeLinkImageField.value
   }
   const card = new Card (newCard, '#place-template'); // создать новую карточку
-  const cardElement = card.generateCard();
+  const cardElement = card.generateCard(); //REVIEW error 149
   renderElement(cardElement); // передать значения для отрисовки DOM
   hidePopupWindow(popupAddPlace); // Спрятать окна
 }
@@ -189,9 +192,12 @@ initialCards.forEach((item) => {
 // экспорт переменных и функций для модуля Card
 export {closeShowImageButton, popupFigureImage, popupFigureCaption, popupShowImage, hidePopupWindow, openPopup, validationSettings};
 
-// Валидация форм
-const formList = Array.from(document.querySelectorAll(validationSettings.formSelector));// ассив форм в документе
-formList.forEach((item) => {
-  const validate = new FormValidator(validationSettings, item);
-  validate.enableValidation();
-});
+// валтдация формы редактирование профиля
+const formEditProfile = document.querySelector(validationSettings.formEditProfile);
+const profileValidation = new FormValidator(validationSettings, formEditProfile);
+profileValidation.enableValidation();
+
+// валидаци формы добавить карточку
+const formAddCard = document.querySelector(validationSettings.formAddCard);
+const newCardValidation = new FormValidator(validationSettings, formAddCard);
+newCardValidation.enableValidation();
