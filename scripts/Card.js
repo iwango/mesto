@@ -24,9 +24,10 @@ export class Card {
     this._element = this._getTemplate(); // взять шаблон
 
     // заполнение карточки
+    this._cardImage = this._element.querySelector('.place__img');
     this._element.querySelector('.place__title').textContent = this._name;
-    this._element.querySelector('.place__img').alt = this._altDescription;
-    this._element.querySelector('.place__img').src = this._link;
+    this._cardImage.alt = this._altDescription;
+    this._cardImage.src = this._link;
 
     // установить события для карточки
     this._setEventListeners();
