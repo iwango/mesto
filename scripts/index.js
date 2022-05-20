@@ -47,34 +47,35 @@ const placeLinkImageField = popupFormAddPlace.querySelector('#place_link_image')
 // список мест
 const elementsList = document.querySelector('.elements__list');
 
-// let escPopup; // Глобальная переменная для передачи открытого окна в функцию закрытия по escape // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< // todo delet this
-
 // Функции
 //попап окна
 // редактировать профиль
 function openPopupEditProfile() {
+  resetForm(popupEditProfile); // очистка формы перед открытием возможно излишне, поля заполняются заново при открытии
+  profileValidation.resetValidation(); // очистка ошибок перед открытием
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
-  profileValidation.toggleButtonExternal(); // валидация полей профиля после открытия и установка состояния кнопки
+  profileValidation.toggleButtonState(); // валидация полей профиля после открытия и установка состояния кнопки
   // проверить наличие формы и сфокусировать
-  focusOnFormOrClose(popupEditProfile); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
+  focusOnFormOrClose(popupEditProfile); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял  // log block delete this ~~~~~~ iwang
 }
 
 function openPopupAddPlace() {
+  resetForm(popupAddPlace); // очистка формы перед открытием
+  newCardValidation.resetValidation(); // очистка ошибок перед открытием
   openPopup(popupAddPlace);
-  newCardValidation.toggleButtonExternal(); // установка состояния кнопки при открытии
+  newCardValidation.toggleButtonState(); // установка состояния кнопки при открытии
   // проверить наличие формы и сфокусировать
-  focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял
+  focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял // log block delete this ~~~~~~ iwang
 }
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
-  // escPopup = openablePopup; // переменная для передачи окна для закрытия по esc // log block delete this ~~~~~~ iwang <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< // todo delet this
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
 }
 
-// установка фокуса на форму или кнопку закрыть, можно и в инпут но если он пустой, то стирается placeholder  не понятно что надо вводить в поле
+// установка фокуса на форму или кнопку закрыть, можно и в инпут но если он пустой, то стирается placeholder  не понятно что надо вводить в поле // log block delete this ~~~~~~ iwang
 function focusOnFormOrClose (openablePopup) {
   const focusElement = function (){
     if (openablePopup.querySelector('.popup__form')) {
@@ -87,10 +88,10 @@ function focusOnFormOrClose (openablePopup) {
   setTimeout(() => focusElement().focus(), 100); // установка, с задержкой для появления эллемента
 }
 
-// проверка где клик, если на оверлее попап, то закрыть окно
+// проверка где клик, если на оверлее попап, то закрыть окно // log block delete this ~~~~~~ iwang  <<<<<<<<<<<<<
 function checkClick (evt) {
   if (evt.target === evt.currentTarget) {
-    hidePopupWindow(evt.target); //todo compleat
+    hidePopupWindow(evt.target);
   }
 }
 
@@ -98,35 +99,23 @@ function checkClick (evt) {
 function checkKeydown (evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup__visible');
-    hidePopupWindow(openedPopup); //todo compleat
+    hidePopupWindow(openedPopup);
   }
 }
-// Сброс формы и полей ошибок при закрытии или отправке формы //REVIEW error 107
+
+// Сброс формы при закрытии или отправке формы
 function resetForm(openedPopup) {
   const popupForm = openedPopup.querySelector('.popup__form');
-  // проверка если есть форма то очищаем если нет то пропуск //REVIEW error 110
-  if (popupForm) {
-    // удаление класса с ошибкой для инпутов
-    const inputError = Array.from(popupForm.querySelectorAll('.popup__input_type_error'));
-    inputError.forEach((errorElement) => {
-      errorElement.classList.remove('popup__input_type_error');
-    });
-  // очистка спанов с ошибкой и удаление видимости
-    const inputSpanError = Array.from(popupForm.querySelectorAll('.popup__input-error_visible'));
-    inputSpanError.forEach((errorElement) => {
-      errorElement.classList.remove('popup__input-error_visible');
-      errorElement.textContent = '';
-    })
-    popupForm.reset(); // сброс формы //REVIEW error 122
-  }
+    popupForm.reset(); // сброс формы
 }
+
 // Спрятать попап и убрать событие прослушки escape
 function hidePopupWindow(openedPopup) {
   openedPopup.removeEventListener('click', checkClick);
   document.removeEventListener('keydown', checkKeydown);
   openedPopup.classList.remove('popup__visible'); // выбор открытого видимого окна параметром и удаление .popup__visible для невидимости
-  resetForm(openedPopup); //REVIEW error 130
 }
+
 // Обработка Submit
 //профиль
 function submitFormEditProfile (evt) {
@@ -135,6 +124,7 @@ function submitFormEditProfile (evt) {
   profileEmployment.textContent = profileEmploymentField.value; // Запись данных в DOM
   hidePopupWindow(popupEditProfile);  // Спрятать попап
 }
+
 // место
 function submitFormAddPlace(evt) {
   evt.preventDefault(); // отмена стандартной обработки формы
@@ -143,10 +133,12 @@ function submitFormAddPlace(evt) {
     name: placeNameField.value,
     link: placeLinkImageField.value
   }
+
   const card = new Card (newCard, '#place-template'); // создать новую карточку
   const cardElement = card.generateCard(); //REVIEW error 149
   renderElement(cardElement); // передать значения для отрисовки DOM
-  hidePopupWindow(popupAddPlace); // Спрятать окна
+
+  hidePopupWindow(popupAddPlace); // Спрятать окно
 }
 
 // Заполненую карточку с событиями, выводим в DOM
@@ -154,12 +146,19 @@ function renderElement(placeElement) {
   elementsList.prepend(placeElement); // вывод в DOM заполненой карточки
 }
 
-
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
 placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
-closeProfileButton.addEventListener('click', () => hidePopupWindow(popupEditProfile)); //спрятать окно редактировать профиль
-closeAddPlaceButton.addEventListener('click', () => hidePopupWindow(popupAddPlace)); //спрятать окно место
+closeProfileButton.addEventListener('click', () => {
+  hidePopupWindow(popupEditProfile);
+});
+
+//спрятать окно редактировать профиль
+closeAddPlaceButton.addEventListener('click', () => {
+  hidePopupWindow(popupAddPlace)
+});
+
+//спрятать окно место
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
 popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
 
