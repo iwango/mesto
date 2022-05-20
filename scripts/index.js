@@ -1,5 +1,3 @@
-// import {initialCards} from "./cards.js";
-
 //константы
 // Настройки для валидации список селекторов и классов
 const validationSettings = {
@@ -16,8 +14,7 @@ const validationSettings = {
 
 // переменные для модуля Card
 const popupShowImage = document.querySelector('.popup_show-image'); // картинка
-// const closeShowImageButton = popupShowImage.querySelector('.popup__close-show-image'); // закрыть картинку
-const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение // log block delete this ~~~~~~ iwang
+const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение
 const popupFigureCaption = popupShowImage.querySelector('.popup__figure-caption'); // описание
 
 // попап окна для управления видимостью с помощью добавления отдельных селектора
@@ -52,39 +49,23 @@ function openPopupEditProfile() {
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
   profileValidation.toggleButtonState(); // валидация полей профиля после открытия и установка состояния кнопки
-  // проверить наличие формы и сфокусировать
-  focusOnFormOrClose(popupEditProfile); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял  // log block delete this ~~~~~~ iwang
 }
 
+// добавить место
 function openPopupAddPlace() {
   resetForm(popupAddPlace); // очистка формы перед открытием
   newCardValidation.resetValidation(); // очистка ошибок перед открытием
   openPopup(popupAddPlace);
   newCardValidation.toggleButtonState(); // установка состояния кнопки при открытии
-  // проверить наличие формы и сфокусировать
-  focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял // log block delete this ~~~~~~ iwang
 }
-// открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape // log block delete this ~~~~~~ iwang
+// открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
 }
 
-// установка фокуса на форму или кнопку закрыть, можно и в инпут но если он пустой, то стирается placeholder  не понятно что надо вводить в поле // log block delete this ~~~~~~ iwang
-function focusOnFormOrClose (openablePopup) {
-  const focusElement = function (){
-    if (openablePopup.querySelector('.popup__form')) {
-      return openablePopup.querySelector('.popup__form'); // если есть форма то возвращает форму
-    } else {
-      return openablePopup.querySelector('.popup__close'); // если нет, то возвращает кнопку закрыть
-    }
-  }
-  focusElement().tabIndex = -1; // табиндекс для возможности установки фокуса
-  setTimeout(() => focusElement().focus(), 100); // установка, с задержкой для появления эллемента
-}
-
-// проверка где клик, если на оверлее или кнопке закрытия попап, то закрыть окно // log block delete this ~~~~~~ iwang  <<<<<<<<<<<<<
+// проверка где клик, если на оверлее или кнопке закрытия попап, то закрыть окно
 function checkClick (evt) {
   if (evt.target === evt.currentTarget || evt.target.classList.contains('popup__close')) {
     hidePopupWindow(evt.currentTarget);
