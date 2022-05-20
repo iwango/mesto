@@ -1,8 +1,8 @@
 export class FormValidator {
-  constructor(validationSettings, elementSelector) {
-    this._inputList = Array.from(elementSelector.querySelectorAll(validationSettings.inputSelector)); // массив инпутов в форме
-    this._submitButton = elementSelector.querySelector(validationSettings.submitButtonSelector); // сабмит формы
-    this._formElement = elementSelector; // валидируемая форма
+  constructor(validationSettings, validatedForm) {
+    this._formElement = validatedForm; // валидируемая форма
+    this._inputList = Array.from(validatedForm.querySelectorAll(validationSettings.inputSelector)); // массив инпутов в форме
+    this._submitButton = validatedForm.querySelector(validationSettings.submitButtonSelector); // сабмит формы
     this._validationSettings = validationSettings; // переменные для валидации
   }
 
