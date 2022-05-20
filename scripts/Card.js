@@ -24,7 +24,7 @@ export class Card {
     this._element = this._getTemplate(); // взять шаблон
 
     // заполнение карточки
-    this._cardImage = this._element.querySelector('.place__img');
+    this._cardImage = this._element.querySelector('.place__img'); // переменная для картинки карточки
     this._element.querySelector('.place__title').textContent = this._name;
     this._cardImage.alt = this._altDescription;
     this._cardImage.src = this._link;
@@ -36,7 +36,8 @@ export class Card {
 
   // список событий
   _setEventListeners() {
-    this._element.querySelector('.place__like-button').addEventListener('click', () => {
+    this._placeLikeButton = this._element.querySelector('.place__like-button'); // переменная для лайка
+    this._placeLikeButton.addEventListener('click', () => {
       this._switchLikeIcon();
     }); // событие для лайка
     this._element.querySelector('.place__delete-button').addEventListener('click', () => {
@@ -52,7 +53,7 @@ export class Card {
 
   // переключение лайка
   _switchLikeIcon() {
-    this._element.querySelector('.place__like-button').classList.toggle('place__like-button_active');
+    this._placeLikeButton.classList.toggle('place__like-button_active');
   }
 
   // удаление карточки
