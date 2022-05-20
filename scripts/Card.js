@@ -1,11 +1,10 @@
-import {closeShowImageButton, popupFigureImage, popupFigureCaption, popupShowImage, hidePopupWindow,openPopup} from "./index.js";
-
-export class Card {
-  constructor(dataCard, cardSelector) {
+class Card {
+  constructor(dataCard, cardSelector, showPopupPlaceImage) {
     this._name = dataCard.name;
     this._altDescription = dataCard.name;
     this._link = dataCard.link;
     this._cardSelector = cardSelector;
+    this._showPopupPlaceImage = showPopupPlaceImage;
   }
 
   // создание клона шаблона карточки
@@ -44,7 +43,7 @@ export class Card {
       this._deleteCard();
     }); // событие для корзины
     this._element.querySelector('.place__img').addEventListener('click', () => {
-      this._showPopupPlaceImage();
+      this._showPopupPlaceImage(this._name, this._link);
     }); // событие для открытия попап картинки
   }
 
@@ -56,25 +55,5 @@ export class Card {
   // удаление карточки
   _deleteCard() {
     this._element.remove();
-  }
-
-  // показать попап карточки места
-  _showPopupPlaceImage() {
-    //данные для попап карточки
-    popupFigureImage.src = this._link; // адрес картинки из src нажатой каринки
-    popupFigureImage.alt = this._name; // описание из alt нажатой картинки
-    popupFigureCaption.textContent = this._altDescription; // описание из alt нажатой картинки
-    // показать попап карточки
-    openPopup(popupShowImage);
-  }
-
-  // очичтить и спрятать попап карточки
-  _hidePopupWindow() {
-    //очистка данных попап картинки
-    popupFigureImage.src = ''; // адрес картинки из src нажатой каринки
-    popupFigureImage.alt = ''; // описание из alt нажатой картинки
-    popupFigureCaption.textContent = ''; // описание из alt нажатой картинки
-
-    hidePopupWindow(popupShowImage); //закрытие попап картинки
   }
 }

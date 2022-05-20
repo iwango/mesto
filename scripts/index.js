@@ -1,6 +1,4 @@
-import {initialCards} from "./cards.js";
-import {Card} from "./Card.js";
-import {FormValidator} from "./FormValidator.js";
+// import {initialCards} from "./cards.js";
 
 //константы
 // Настройки для валидации список селекторов и классов
@@ -18,8 +16,8 @@ const validationSettings = {
 
 // переменные для модуля Card
 const popupShowImage = document.querySelector('.popup_show-image'); // картинка
-const closeShowImageButton = popupShowImage.querySelector('.popup__close-show-image'); // закрыть картинку
-const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение
+// const closeShowImageButton = popupShowImage.querySelector('.popup__close-show-image'); // закрыть картинку
+const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение // log block delete this ~~~~~~ iwang
 const popupFigureCaption = popupShowImage.querySelector('.popup__figure-caption'); // описание
 
 // попап окна для управления видимостью с помощью добавления отдельных селектора
@@ -137,7 +135,7 @@ function submitFormAddPlace(evt) {
 }
 
 function creatNewCard(newCard) {
-  const card = new Card (newCard, '#place-template'); // создать новую карточку
+  const card = new Card (newCard, '#place-template', showPopupPlaceImage); // создать новую карточку
   const cardElement = card.generateCard();
   renderElement(cardElement); // передать значения для отрисовки DOM
 
@@ -176,8 +174,15 @@ initialCards.forEach((item) => {
 creatNewCard(item);
 });
 
-// экспорт переменных и функций для модуля Card
-export {closeShowImageButton, popupFigureImage, popupFigureCaption, popupShowImage, hidePopupWindow, openPopup, validationSettings};
+// функция открытия папап карточки для передачи в Card.js
+function showPopupPlaceImage(name, link) {
+  //данные для попап карточки
+  popupFigureImage.src = link; // адрес картинки карточки
+  popupFigureImage.alt = name; // альтернативное описание картинки
+  popupFigureCaption.textContent = name; // описание картинки
+  // показать попап карточки
+  openPopup(popupShowImage);
+}
 
 // валтдация формы редактирование профиля
 const formEditProfile = document.querySelector(validationSettings.formEditProfile);
@@ -188,3 +193,4 @@ profileValidation.enableValidation();
 const formAddCard = document.querySelector(validationSettings.formAddCard);
 const newCardValidation = new FormValidator(validationSettings, formAddCard);
 newCardValidation.enableValidation();
+
