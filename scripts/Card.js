@@ -46,9 +46,6 @@ export class Card {
     this._element.querySelector('.place__img').addEventListener('click', () => {
       this._showPopupPlaceImage();
     }); // событие для открытия попап картинки
-    closeShowImageButton.addEventListener('click', () => {
-      this._hidePopupWindow();
-    }); //спрятать попап окно картинки
   }
 
   // переключение лайка

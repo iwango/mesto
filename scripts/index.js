@@ -28,8 +28,6 @@ const popupAddPlace = document.querySelector('.popup_add-place'); // место
 // кнопоки для открытия и закрытия окон
 const profileEditButton = document.querySelector('.profile__edit-button'); // редактировать профиль
 const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
-const closeProfileButton = popupEditProfile.querySelector('.popup__close-profile'); // закрыть профиль
-const closeAddPlaceButton = popupAddPlace.querySelector('.popup__close-add-place'); // закрыть место
 // строки из HTML для редактирования профиля
 const profileName = document.querySelector('.profile__name');
 const profileEmployment = document.querySelector('.profile__employment');
@@ -68,7 +66,7 @@ function openPopupAddPlace() {
   // проверить наличие формы и сфокусировать
   focusOnFormOrClose(popupAddPlace); // Вынес отдельно функцию фокусировки. Или она не нужна инадо ее вообще удалить? не совсем понял // log block delete this ~~~~~~ iwang
 }
-// открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
+// открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape // log block delete this ~~~~~~ iwang
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
   openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
@@ -88,10 +86,10 @@ function focusOnFormOrClose (openablePopup) {
   setTimeout(() => focusElement().focus(), 100); // установка, с задержкой для появления эллемента
 }
 
-// проверка где клик, если на оверлее попап, то закрыть окно // log block delete this ~~~~~~ iwang  <<<<<<<<<<<<<
+// проверка где клик, если на оверлее или кнопке закрытия попап, то закрыть окно // log block delete this ~~~~~~ iwang  <<<<<<<<<<<<<
 function checkClick (evt) {
-  if (evt.target === evt.currentTarget) {
-    hidePopupWindow(evt.target);
+  if (evt.target === evt.currentTarget || evt.target.classList.contains('popup__close')) {
+    hidePopupWindow(evt.currentTarget);
   }
 }
 
@@ -153,14 +151,7 @@ function renderElement(placeElement) {
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
 placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
-closeProfileButton.addEventListener('click', () => {
-  hidePopupWindow(popupEditProfile);
-});
 
-//спрятать окно редактировать профиль
-closeAddPlaceButton.addEventListener('click', () => {
-  hidePopupWindow(popupAddPlace)
-});
 
 //спрятать окно место
 popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
