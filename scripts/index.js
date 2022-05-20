@@ -134,11 +134,15 @@ function submitFormAddPlace(evt) {
     link: placeLinkImageField.value
   }
 
+  creatNewCard(newCard); // создать новую карточку
+  hidePopupWindow(popupAddPlace); // Спрятать окно
+}
+
+function creatNewCard(newCard) {
   const card = new Card (newCard, '#place-template'); // создать новую карточку
-  const cardElement = card.generateCard(); //REVIEW error 149
+  const cardElement = card.generateCard();
   renderElement(cardElement); // передать значения для отрисовки DOM
 
-  hidePopupWindow(popupAddPlace); // Спрятать окно
 }
 
 // Заполненую карточку с событиями, выводим в DOM
@@ -178,9 +182,7 @@ profileEmploymentField.value = profileEmployment.textContent; // заполне�
 
 // Заполнение карточками из начального массива
 initialCards.forEach((item) => {
-  const card = new Card(item, '#place-template');
-  const cardElement = card.generateCard();
-  renderElement(cardElement);
+creatNewCard(item);
 });
 
 // экспорт переменных и функций для модуля Card
