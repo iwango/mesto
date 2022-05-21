@@ -63,7 +63,7 @@ function openPopupAddPlace() {
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
-  openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике // log block delete this ~~~~~~ iwang
+  openablePopup.addEventListener('mousedown', checkClick); // прослушка оверлея и закрытие при нажатии кнопки мышки // да вчера заметил иногда случайно закрывал окна, забыл исправить
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
 }
 
