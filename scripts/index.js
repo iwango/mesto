@@ -49,11 +49,9 @@ const elementsList = document.querySelector('.elements__list');
 //попап окна
 // редактировать профиль
 function openPopupEditProfile() {
-  resetForm(popupEditProfile); // очистка формы перед открытием возможно излишне, поля заполняются заново при открытии
   profileValidation.resetValidation(); // очистка ошибок перед открытием
   fillInitialProfileValues (); // заполнить поля формы из DOM
   openPopup(popupEditProfile); //  открытие попап
-  profileValidation.toggleButtonState(); // валидация полей профиля после открытия и установка состояния кнопки
 }
 
 // добавить место
@@ -61,12 +59,11 @@ function openPopupAddPlace() {
   resetForm(popupAddPlace); // очистка формы перед открытием
   newCardValidation.resetValidation(); // очистка ошибок перед открытием
   openPopup(popupAddPlace);
-  newCardValidation.toggleButtonState(); // установка состояния кнопки при открытии
 }
 // открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
 function openPopup(openablePopup) {
   openablePopup.classList.add('popup__visible'); // включаем попап
-  openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике
+  openablePopup.addEventListener('click', checkClick); // прослушка оверлея и закрытие при клике // log block delete this ~~~~~~ iwang
   document.addEventListener('keydown', checkKeydown); // прослушка клавиш
 }
 
