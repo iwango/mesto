@@ -116,20 +116,18 @@ function submitFormAddPlace(evt) {
     link: placeLinkImageField.value
   }
 
-  creatNewCard(newCard); // создать новую карточку
+  renderElement(newCard); // отрисовать карточку из введенных данных
   hidePopupWindow(popupAddPlace); // Спрятать окно
 }
 
 function creatNewCard(newCard) {
   const card = new Card (newCard, '#place-template', showPopupPlaceImage); // создать новую карточку
-  const cardElement = card.generateCard();
-  renderElement(cardElement); // передать значения для отрисовки DOM
-
+  return card.generateCard(); // вернуть карточку
 }
 
-// Заполненую карточку с событиями, выводим в DOM
+// вывести карточку с событиями в DOM
 function renderElement(placeElement) {
-  elementsList.prepend(placeElement); // вывод в DOM заполненой карточки
+  elementsList.prepend(creatNewCard(placeElement)); // вывод в DOM после заполнения карточки в creatNewCard
 }
 
 // прослушивание событий
@@ -157,7 +155,7 @@ profileEmploymentField.value = profileEmployment.textContent; // заполне�
 
 // Заполнение карточками из начального массива
 initialCards.forEach((item) => {
-creatNewCard(item);
+  renderElement(item);
 });
 
 // функция открытия папап карточки для передачи в Card.js
