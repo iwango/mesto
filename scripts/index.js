@@ -1,3 +1,8 @@
+// блок импортов
+import {initialCards} from "./cards.js"; // начальные значения для карточек
+import {Card} from "./Card.js"; // класс для создания карточек
+import {FormValidator} from "./FormValidator.js"; //класс для валидации
+
 //константы
 // Настройки для валидации список селекторов и классов
 const validationSettings = {

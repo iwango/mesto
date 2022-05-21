@@ -1,4 +1,5 @@
-class FormValidator {
+
+export class FormValidator {
   constructor(validationSettings, validatedForm) {
     this._formElement = validatedForm; // валидируемая форма
     this._inputList = Array.from(validatedForm.querySelectorAll(validationSettings.inputSelector)); // массив инпутов в форме
