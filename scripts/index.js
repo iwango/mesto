@@ -1,177 +1,36 @@
-// блок импортов
-import {initialCards} from "./cards.js"; // начальные значения для карточек
-import {Card} from "./Card.js"; // класс для создания карточек
-import {FormValidator} from "./FormValidator.js"; //класс для валидации
+import Section from "./components/Section.js";
+import Card from "./Card.js";
 
-//константы
-// Настройки для валидации список селекторов и классов
-const validationSettings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button-save',
-  inactiveButtonClass: 'popup__button-save_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorVisibleClass: 'popup__input-error_visible',
-  autoFillFormName: '.popup__form-edit-profile',
-  formEditProfile:  '.popup__form-edit-profile',
-  formAddCard: '.popup__form-add-place'
-}
+import {
+  initialCards,
+  cardListSelector,
+  cardSelector
+} from "./constants.js";
 
-// переменные для модуля Card
-const popupShowImage = document.querySelector('.popup_show-image'); // картинка
-const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение
-const popupFigureCaption = popupShowImage.querySelector('.popup__figure-caption'); // описание
-
-// попап окна для управления видимостью с помощью добавления отдельных селектора
-const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
-const popupAddPlace = document.querySelector('.popup_add-place'); // место
-// кнопоки для открытия и закрытия окон
-const profileEditButton = document.querySelector('.profile__edit-button'); // редактировать профиль
-const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
-// строки из HTML для редактирования профиля
-const profileName = document.querySelector('.profile__name');
-const profileEmployment = document.querySelector('.profile__employment');
-// форма для редактирования профиля
-const popupFormEditProfile = popupEditProfile.querySelector('.popup__form-edit-profile');
-// форма для редактирования места
-const popupFormAddPlace = popupAddPlace.querySelector('.popup__form-add-place');
-// пременные для полей ввода
-// редактор профиля
-const profileNameField = popupFormEditProfile.querySelector('#profile_name_field');
-const profileEmploymentField = popupFormEditProfile.querySelector('#profile_employment_field');
-// редактор места
-const placeNameField = popupFormAddPlace.querySelector('#place_name_field');
-const placeLinkImageField = popupFormAddPlace.querySelector('#place_link_image');
-// список мест
-const elementsList = document.querySelector('.elements__list');
-
-// Функции
-//попап окна
-// редактировать профиль
-function openPopupEditProfile() {
-  profileValidation.resetValidation(); // очистка ошибок перед открытием
-  fillInitialProfileValues (); // заполнить поля формы из DOM
-  openPopup(popupEditProfile); //  открытие попап
-}
-
-// добавить место
-function openPopupAddPlace() {
-  resetForm(popupAddPlace); // очистка формы перед открытием
-  newCardValidation.resetValidation(); // очистка ошибок перед открытием
-  openPopup(popupAddPlace);
-}
-// открытие попап с параметром,установка фокуса на форму, прослушка для оверлей, прослушка для escape
-function openPopup(openablePopup) {
-  openablePopup.classList.add('popup__visible'); // включаем попап
-  openablePopup.addEventListener('mousedown', checkClick); // прослушка оверлея и закрытие при нажатии кнопки мышки // да вчера заметил иногда случайно закрывал окна, забыл исправить
-  document.addEventListener('keydown', checkKeydown); // прослушка клавиш
-}
-
-// проверка где клик, если на оверлее или кнопке закрытия попап, то закрыть окно
-function checkClick (evt) {
-  if (evt.target === evt.currentTarget || evt.target.classList.contains('popup__close')) {
-    hidePopupWindow(evt.currentTarget);
+const defaultCardList = new Section({
+  data: initialCards, renderer:(item) => {
+    // создать карточку
+    const card = new Card(item, cardSelector, showPopupPlaceImage)
+    const cardElement = card.generateCard();
+    defaultCardList.addItem(cardElement);
   }
-}
-
-// проверка нажатий клавиш и реагирование по esc
-function checkKeydown (evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup__visible');
-    hidePopupWindow(openedPopup);
-  }
-}
-
-// Сброс формы при закрытии или отправке формы
-function resetForm(openedPopup) {
-  const popupForm = openedPopup.querySelector('.popup__form');
-    popupForm.reset(); // сброс формы
-}
-
-// Спрятать попап и убрать событие прослушки escape
-function hidePopupWindow(openedPopup) {
-  openedPopup.removeEventListener('click', checkClick);
-  document.removeEventListener('keydown', checkKeydown);
-  openedPopup.classList.remove('popup__visible'); // выбор открытого видимого окна параметром и удаление .popup__visible для невидимости
-}
-
-// Обработка Submit
-//профиль
-function submitFormEditProfile (evt) {
-  evt.preventDefault(); // отмена стандартной обработки формы
-  profileName.textContent = profileNameField.value; // Запись данных в DOM
-  profileEmployment.textContent = profileEmploymentField.value; // Запись данных в DOM
-  hidePopupWindow(popupEditProfile);  // Спрятать попап
-}
-
-// место
-function submitFormAddPlace(evt) {
-  evt.preventDefault(); // отмена стандартной обработки формы
-  // формирование объекта для добавления карточки
-  const newCard =   {
-    name: placeNameField.value,
-    link: placeLinkImageField.value
-  }
-
-  renderElement(newCard); // отрисовать карточку из введенных данных
-  hidePopupWindow(popupAddPlace); // Спрятать окно
-}
-
-function creatNewCard(newCard) {
-  const card = new Card (newCard, '#place-template', showPopupPlaceImage); // создать новую карточку
-  return card.generateCard(); // вернуть карточку
-}
-
-// вывести карточку с событиями в DOM
-function renderElement(placeElement) {
-  elementsList.prepend(creatNewCard(placeElement)); // вывод в DOM после заполнения карточки в creatNewCard
-}
-
-// прослушивание событий
-profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
-placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
+}, cardListSelector);
 
 
-//спрятать окно место
-popupFormEditProfile.addEventListener('submit', submitFormEditProfile); // отправка формы профиль
-popupFormAddPlace.addEventListener('submit', submitFormAddPlace); // отправка формы место
-
-// заполнить поля из DOM
-function fillInitialProfileValues (){
-profileNameField.value = profileName.textContent; // заполнение формы из DOM
-profileEmploymentField.value = profileEmployment.textContent; // заполнение формы из DOM
-}
-
-/*Разовая инициализация попап окон добавлением display flex. Отключает анимацию попап окон при загрузке.
-Раньше инициализировалось после загрузки документа, но при модульном подключении код выполняется после загрузки */
-(function () {
-  popupEditProfile.classList.add('popup_opened');
-  popupAddPlace.classList.add('popup_opened');
-  popupShowImage.classList.add('popup_opened');
-}());
-
-// Заполнение карточками из начального массива
-initialCards.forEach((item) => {
-  renderElement(item);
-});
-
-// функция открытия папап карточки для передачи в Card.js
 function showPopupPlaceImage(name, link) {
-  //данные для попап карточки
+/*  //данные для попап карточки
   popupFigureImage.src = link; // адрес картинки карточки
   popupFigureImage.alt = name; // альтернативное описание картинки
   popupFigureCaption.textContent = name; // описание картинки
   // показать попап карточки
-  openPopup(popupShowImage);
+  openPopup(popupShowImage);*/
+
+  console.log('резерв showPopupPlaceImage');
+  console.log(name, link);
 }
 
-// валтдация формы редактирование профиля
-const formEditProfile = document.querySelector(validationSettings.formEditProfile);
-const profileValidation = new FormValidator(validationSettings, formEditProfile);
-profileValidation.enableValidation();
 
-// валидаци формы добавить карточку
-const formAddCard = document.querySelector(validationSettings.formAddCard);
-const newCardValidation = new FormValidator(validationSettings, formAddCard);
-newCardValidation.enableValidation();
 
+
+// defaultCardList.temp();
+defaultCardList.renderItems();

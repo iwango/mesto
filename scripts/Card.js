@@ -1,4 +1,4 @@
-export class Card {
+export default class Card {
   constructor(dataCard, cardSelector, showPopupPlaceImage) {
     this._name = dataCard.name;
     this._altDescription = dataCard.name;
