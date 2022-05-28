@@ -2,6 +2,7 @@ import Section from "./components/Section.js";
 import Card from "./Card.js";
 import PopupWithImage from "./components/PopupWithImage.js";
 import PopupWithForm from "./components/PopupWithForm.js";
+import UserInfo from "./components/UserInfo.js";
 import {FormValidator} from "./FormValidator.js";
 
 
@@ -12,7 +13,9 @@ import {
   popupShowImage,
   popupAddPlace,
   placeAddButton,
-  validationSettings
+  validationSettings,
+  profileName,
+  profileEmployment
 } from "./constants.js";
 
 const defaultCardList = new Section({
@@ -45,6 +48,14 @@ function openPopupAddPlace() {
   });
   popup.open();
 }
+
+
+const profileInfo = new UserInfo({profileName, profileEmployment})
+const userInfo = profileInfo.getUserInfo();
+console.log(userInfo);
+profileInfo.setUserInfo('1111', 'sagfsag')
+
+
 
 
 // прослушивание событий

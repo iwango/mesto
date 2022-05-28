@@ -50,3 +50,7 @@ export const validationSettings = {
 
 export const popupAddPlace = document.querySelector('.popup_add-place'); // место
 export const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
+
+// строки из HTML для редактирования профиля
+export const profileName = document.querySelector('.profile__name');
+export const profileEmployment = document.querySelector('.profile__employment');
