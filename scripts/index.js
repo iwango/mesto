@@ -1,10 +1,14 @@
 import Section from "./components/Section.js";
 import Card from "./Card.js";
+import Popup from "./components/Popup.js";
 
 import {
   initialCards,
   cardListSelector,
-  cardSelector
+  cardSelector,
+  popupFigureImage,
+  popupShowImage,
+  popupFigureCaption
 } from "./constants.js";
 
 const defaultCardList = new Section({
@@ -18,15 +22,17 @@ const defaultCardList = new Section({
 
 
 function showPopupPlaceImage(name, link) {
-/*  //данные для попап карточки
+  //данные для попап карточки
   popupFigureImage.src = link; // адрес картинки карточки
   popupFigureImage.alt = name; // альтернативное описание картинки
   popupFigureCaption.textContent = name; // описание картинки
   // показать попап карточки
-  openPopup(popupShowImage);*/
+
+  const popup = new Popup(popupShowImage);
+  popup.open();
 
   console.log('резерв showPopupPlaceImage');
-  console.log(name, link);
+  // console.log(name, link);
 }
 
 

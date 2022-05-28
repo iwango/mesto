@@ -28,3 +28,8 @@ export const initialCards = [
 
 export const cardListSelector = '.elements__list';
 export const cardSelector = '#place-template';
+
+// переменные для модуля Card
+export const popupShowImage = document.querySelector('.popup_show-image'); // картинка
+export const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение
+export const popupFigureCaption = popupShowImage.querySelector('.popup__figure-caption'); // описание
