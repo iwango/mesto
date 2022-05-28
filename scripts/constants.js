@@ -33,3 +33,20 @@ export const cardSelector = '#place-template';
 export const popupShowImage = document.querySelector('.popup_show-image'); // картинка
 export const popupFigureImage = popupShowImage.querySelector('.popup__figure-image'); // изображение
 export const popupFigureCaption = popupShowImage.querySelector('.popup__figure-caption'); // описание
+
+
+// Настройки для валидации список селекторов и классов
+export const validationSettings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button-save',
+  inactiveButtonClass: 'popup__button-save_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorVisibleClass: 'popup__input-error_visible',
+  autoFillFormName: '.popup__form-edit-profile',
+  formEditProfile:  '.popup__form-edit-profile',
+  formAddCard: '.popup__form-add-place'
+}
+
+export const popupAddPlace = document.querySelector('.popup_add-place'); // место
+export const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
