@@ -49,8 +49,19 @@ export const validationSettings = {
 }
 
 export const popupAddPlace = document.querySelector('.popup_add-place'); // место
+export const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
+
 export const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
+export const profileEditButton = document.querySelector('.profile__edit-button'); // редактировать профиль
+
 
 // строки из HTML для редактирования профиля
 export const profileName = document.querySelector('.profile__name');
 export const profileEmployment = document.querySelector('.profile__employment');
+
+// пременные для полей ввода
+// форма для редактирования профиля
+export const popupFormEditProfile = popupEditProfile.querySelector('.popup__form-edit-profile');
+// редактор профиля
+export const profileNameField = popupFormEditProfile.querySelector('#profile_name_field');
+export const profileEmploymentField = popupFormEditProfile.querySelector('#profile_employment_field');

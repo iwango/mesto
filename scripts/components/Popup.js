@@ -1,14 +1,13 @@
 export default class Popup {
   constructor(popupSelector) {
     this._popup = popupSelector;
-    console.log(this._popup);
     // бинд функций для возможности удаления слушателей
     this._handleEscClose = this._handleEscClose.bind(this);
     this._mouseEvent = this._mouseEvent.bind(this);
   }
 
   open() {
-    this._popup.classList.add('popup__visible', 'popup_opened'); // включаем попап
+    this._popup.classList.add('popup__visible'); // включаем попап
     this.setEventListeners(); // установка слушателей
   }
 
