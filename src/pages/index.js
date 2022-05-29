@@ -1,12 +1,12 @@
 // модули
-import Section from "./components/Section.js";
-import Card from "./Card.js";
-import PopupWithImage from "./components/PopupWithImage.js";
-import PopupWithForm from "./components/PopupWithForm.js";
-import UserInfo from "./components/UserInfo.js";
+import Section from "../../scripts/components/Section.js";
+import Card from "../../scripts/Card.js";
+import PopupWithImage from "../../scripts/components/PopupWithImage.js";
+import PopupWithForm from "../../scripts/components/PopupWithForm.js";
+import UserInfo from "../../scripts/components/UserInfo.js";
 
 // значения для валидации
-import {FormValidator} from "./FormValidator.js";
+import {FormValidator} from "../../scripts/FormValidator.js";
 
 //значения констант
 import {
@@ -23,7 +23,7 @@ import {
   profileEditButton,
   profileNameField,
   profileEmploymentField
-} from "./constants.js";
+} from "../../scripts/constants.js";
 
 // Начальное заполнение секции с карточками
 const defaultCardList = new Section({
