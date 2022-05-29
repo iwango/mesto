@@ -42,40 +42,40 @@ function createNewCard (item, cardSelector, handleCardClick) {
 }
 
 // функция всплытия карточки
+const popupImage = new PopupWithImage(popupShowImage);
 function handleCardClick(name, link) {
-  const popup = new PopupWithImage(popupShowImage);
-  popup.open(name, link);
+  popupImage.open(name, link);
 }
 
 // попап добавления новой карточки
-function openPopupAddPlace() {
-  newCardValidation.resetValidation(); // очистка ошибок перед открытием
-  newCardValidation.toggleButtonState(); // установка валидности сабмит
-  const popup = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
+  const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
     //создать новую карточку, в inputValues значения инпутов из формы
       createNewCard(inputValues, cardSelector, handleCardClick);
     }
   });
-  popup.open();
+function openPopupAddPlace() {
+  newCardValidation.resetValidation(); // очистка ошибок перед открытием
+  newCardValidation.toggleButtonState(); // установка валидности сабмит
+  popupAddCard.open();
 }
 
 // попап редактирование профиля
+const profileInfo = new UserInfo({profileName, profileEmployment});
+
+  // попап редактировать профиль
+  const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues) => {
+    // заполнить профиль из инпутов
+      profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
+    }
+  });
 function openPopupEditProfile() {
-  const profileInfo = new UserInfo({profileName, profileEmployment});
   const userInfo = profileInfo.getUserInfo();
   profileNameField.value = userInfo.name;
   profileEmploymentField.value = userInfo.info;
   profileValidation.resetValidation(); // очистка ошибок перед открытием
   profileValidation.toggleButtonState(); // установка валидности сабмит
 
-  // попап редактировать профиль
-  const popup = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues) => {
-    // заполнить профиль из инпутов
-      profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
-    }
-  });
-
-  popup.open();
+  popupEditUser.open();
 }
 
 // прослушивание событий
