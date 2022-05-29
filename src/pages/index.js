@@ -1,12 +1,13 @@
+import './index.css';
 // модули
-import Section from "../../scripts/components/Section.js";
-import Card from "../../scripts/Card.js";
-import PopupWithImage from "../../scripts/components/PopupWithImage.js";
-import PopupWithForm from "../../scripts/components/PopupWithForm.js";
-import UserInfo from "../../scripts/components/UserInfo.js";
+import Section from "../scripts/components/Section.js";
+import Card from "../scripts/components/Card.js";
+import PopupWithImage from "../scripts/components/PopupWithImage.js";
+import PopupWithForm from "../scripts/components/PopupWithForm.js";
+import UserInfo from "../scripts/components/UserInfo.js";
 
 // значения для валидации
-import {FormValidator} from "../../scripts/FormValidator.js";
+import {FormValidator} from "../scripts/components/FormValidator.js";
 
 //значения констант
 import {
@@ -23,7 +24,7 @@ import {
   profileEditButton,
   profileNameField,
   profileEmploymentField
-} from "../../scripts/constants.js";
+} from "../scripts/utils/constants.js";
 
 // Начальное заполнение секции с карточками
 const defaultCardList = new Section({
@@ -48,6 +49,8 @@ function handleCardClick(name, link) {
 
 // попап добавления новой карточки
 function openPopupAddPlace() {
+  newCardValidation.resetValidation(); // очистка ошибок перед открытием
+  newCardValidation.toggleButtonState(); // установка валидности сабмит
   const popup = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
     //создать новую карточку, в inputValues значения инпутов из формы
       createNewCard(inputValues, cardSelector, handleCardClick);
@@ -62,6 +65,7 @@ function openPopupEditProfile() {
   const userInfo = profileInfo.getUserInfo();
   profileNameField.value = userInfo.name;
   profileEmploymentField.value = userInfo.info;
+  profileValidation.resetValidation(); // очистка ошибок перед открытием
   profileValidation.toggleButtonState(); // установка валидности сабмит
 
   // попап редактировать профиль

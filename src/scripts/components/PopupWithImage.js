@@ -1,5 +1,5 @@
 import Popup from "./Popup.js"; // расширяемый класс
-import {popupFigureCaption, popupFigureImage} from "../constants.js";
+import {popupFigureCaption, popupFigureImage} from "../utils/constants.js";
 
 export default class PopupWithImage extends Popup {
   constructor(popupSelector) {
