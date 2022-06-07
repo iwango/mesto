@@ -1,24 +1,20 @@
 export default class UserInfo {
-  constructor({profileName, profileEmployment}) {
-    // console.log("userinfo class");
+  constructor({profileName, profileEmployment, profileAvatar}) {
     this.userName = profileName;
     this.userInfo = profileEmployment;
-    // console.log(this.userInfo);
-    // console.log(this.userName);
+    this.userAvatar = profileAvatar;
   }
 
   getUserInfo() {
-    // console.log('getInfo');
     this.user ={};
     this.user.name = this.userName.textContent;
     this.user.info = this.userInfo.textContent;
     return this.user;
   }
 
-  setUserInfo(userName, userInfo) {
-    // console.log('setInfo');
-    // console.log(userName, userInfo);
+  setUserInfo(userName, userInfo, userAvatar) {
     this.userName.textContent = userName;
     this.userInfo.textContent = userInfo;
+    this.userAvatar.src = userAvatar;
   }
 }

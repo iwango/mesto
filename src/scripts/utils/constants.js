@@ -58,6 +58,7 @@ export const profileEditButton = document.querySelector('.profile__edit-button')
 // строки из HTML для редактирования профиля
 export const profileName = document.querySelector('.profile__name');
 export const profileEmployment = document.querySelector('.profile__employment');
+export const profileAvatar = document.querySelector('.profile__avatar');
 
 // пременные для полей ввода
 // форма для редактирования профиля

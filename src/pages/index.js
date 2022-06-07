@@ -5,6 +5,7 @@ import Card from "../scripts/components/Card.js";
 import PopupWithImage from "../scripts/components/PopupWithImage.js";
 import PopupWithForm from "../scripts/components/PopupWithForm.js";
 import UserInfo from "../scripts/components/UserInfo.js";
+import Api from "../scripts/components/Api.js";
 
 // значения для валидации
 import {FormValidator} from "../scripts/components/FormValidator.js";
@@ -21,11 +22,26 @@ import {
   validationSettings,
   profileName,
   profileEmployment,
+  profileAvatar,
   profileEditButton,
   profileNameField,
   profileEmploymentField
 } from "../scripts/utils/constants.js";
 
+// класс API // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
+/*
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
+  headers: {
+    authorization: '61391b4d-6e45-4247-a99a-0216b7bf037c',
+    'Content-Type': 'application/json'
+  }
+});
+const tempUser = api.getUserInfo();
+const tempCards = api.getInitialCards();
+*/
+
+ // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
 // Начальное заполнение секции с карточками
 const defaultCardList = new Section({
   data: initialCards, renderer:(item) => {
@@ -60,7 +76,7 @@ function openPopupAddPlace() {
 }
 
 // попап редактирование профиля
-const profileInfo = new UserInfo({profileName, profileEmployment});
+const profileInfo = new UserInfo({profileName, profileEmployment, profileAvatar});
 
   // попап редактировать профиль
   const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues) => {
@@ -101,3 +117,30 @@ profileValidation.enableValidation();
   popupAddPlace.classList.add('popup_opened');
   popupShowImage.classList.add('popup_opened');
 }());
+
+ // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
+  headers: {
+    authorization: '61391b4d-6e45-4247-a99a-0216b7bf037c',
+    'Content-Type': 'application/json'
+  }
+});
+
+const tempCards = api.getInitialCards();
+
+Promise.resolve(api.getUserInfo())
+  .then((userInfo) => {
+    profileInfo.setUserInfo(userInfo.name, userInfo.about, userInfo.avatar)
+  })
+
+Promise.resolve(tempCards)
+  .then((initialCards) => {
+    console.log(initialCards);
+  })
+
+
+
+
+
+ // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
