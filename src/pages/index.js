@@ -12,7 +12,7 @@ import {FormValidator} from "../scripts/components/FormValidator.js";
 
 //значения констант
 import {
-  initialCards,
+  // initialCards,
   cardListSelector,
   cardSelector,
   popupShowImage,
@@ -28,35 +28,23 @@ import {
   profileEmploymentField
 } from "../scripts/utils/constants.js";
 
-// класс API // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
-/*
-const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
-  headers: {
-    authorization: '61391b4d-6e45-4247-a99a-0216b7bf037c',
-    'Content-Type': 'application/json'
-  }
-});
-const tempUser = api.getUserInfo();
-const tempCards = api.getInitialCards();
-*/
-
- // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
-// Начальное заполнение секции с карточками
-const defaultCardList = new Section({
+// Секция для карточек
+/*const defaultCardList = new Section({
   data: initialCards, renderer:(item) => {
     // создать карточку
     createNewCard(item, cardSelector, handleCardClick);
   }
-}, cardListSelector);
+}, cardListSelector);*/
+
+const defaultCardList = new Section(cardListSelector);
 
 // создание карточки
-function createNewCard (item, cardSelector, handleCardClick) {
+const createNewCard = function (item, cardSelector, handleCardClick) {
   const card = new Card(item, cardSelector, handleCardClick)
   const cardElement = card.generateCard();
   defaultCardList.addItem(cardElement);
 }
-
+const tempiwang = 1;
 // функция всплытия карточки
 const popupImage = new PopupWithImage(popupShowImage);
 function handleCardClick(name, link) {
@@ -98,9 +86,6 @@ function openPopupEditProfile() {
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
 placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
 
-// начальное заполнение карточек
-defaultCardList.renderItems();
-
 // валидаци формы добавить карточку
 const formAddCard = document.querySelector(validationSettings.formAddCard);
 const newCardValidation = new FormValidator(validationSettings, formAddCard);
@@ -127,20 +112,17 @@ const api = new Api({
   }
 });
 
-const tempCards = api.getInitialCards();
-
 Promise.resolve(api.getUserInfo())
   .then((userInfo) => {
     profileInfo.setUserInfo(userInfo.name, userInfo.about, userInfo.avatar)
   })
 
-Promise.resolve(tempCards)
+Promise.resolve(api.getInitialCards())
   .then((initialCards) => {
-    console.log(initialCards);
+    initialCards.forEach((item) => {
+      createNewCard(item, cardSelector,handleCardClick);
+    })
   })
-
-
-
 
 
  // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
