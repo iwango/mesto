@@ -1,12 +1,11 @@
 import Popup from "./Popup.js"; // расширяемый класс
-import {popupFigureCaption, popupFigureImage} from "../utils/constants.js";
 
 export default class PopupWithImage extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
     // добавить переменные для оформления попап
-    this._popupFigureImage = popupFigureImage;
-    this._popupFigureCaption = popupFigureCaption;
+    this._popupFigureImage = this._popup.querySelector('.popup__figure-image');
+    this._popupFigureCaption = this._popup.querySelector('.popup__figure-caption');
   }
 
   open(name, link) {

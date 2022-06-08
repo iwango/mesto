@@ -1,17 +1,18 @@
-import PopupWithForm from "./PopupWithForm.js";
-import {popupDelConfirm} from "../utils/constants.js";
-
 export default class Card {
-  constructor(dataCard, cardSelector, showPopupPlaceImage, api) {
+  constructor(dataCard, cardSelector, showPopupPlaceImage, handleCardLike, handleCardDelete, userId) {
+    this._dataCard = dataCard;
     this._name = dataCard.name;
     this._altDescription = dataCard.name;
     this._link = dataCard.link;
     this._likes = dataCard.likes;
     this._cardSelector = cardSelector;
     this._showPopupPlaceImage = showPopupPlaceImage;
-    this._selfOwner = dataCard.owner._id === '1413b2a4f9a16286007a9bca' ? true: false; // проверка владельца
+    this._handleCardLike = handleCardLike;
+    this._handleCardDelete = handleCardDelete;
+    this._userId = userId;
+    this._ownCard = dataCard.owner._id === userId ? true: false; // проверка владельца
     this._idCard = dataCard._id;
-    this._api = api;
+    this._currentOwnLike = this._checkOwnLike(this._likes);
   }
 
   // создание клона шаблона карточки
@@ -21,7 +22,6 @@ export default class Card {
       .content
       .querySelector('.elements__item')
       .cloneNode(true);
-
     return cardElement;
   }
 
@@ -35,9 +35,14 @@ export default class Card {
     this._element.querySelector('.place__title').textContent = this._name;
     this._cardImage.alt = this._altDescription;
     this._cardImage.src = this._link;
-    this._likeCounter.textContent = this._likes.length;
-    if (!this._selfOwner) {
+    this._placeLikeButton = this._element.querySelector('.place__like-button'); // переменная для лайка
+
+    this._setLikeCounter(this._dataCard);
+    if (!this._ownCard) {
       this._element.querySelector('.place__delete-button').remove(); // удалить корзину если не владелец
+    }
+    if (this._currentOwnLike) {
+      this.setLikeON();
     }
 
     // установить события для карточки
@@ -47,13 +52,10 @@ export default class Card {
 
   // список событий
   _setEventListeners() {
-    this._placeLikeButton = this._element.querySelector('.place__like-button'); // переменная для лайка
-    this._placeLikeButton.addEventListener('click', () => {
-      this._switchLikeIcon();
-    }); // событие для лайка
-    if (this._selfOwner) {
-    this._element.querySelector('.place__delete-button').addEventListener('click', () => {
-      this._deleteCard();
+    this._placeLikeButton.addEventListener('click', () => this._handleCardLike(this._idCard)); // событие для лайка
+    if (this._ownCard) {
+      this._element.querySelector('.place__delete-button').addEventListener('click', () => {
+        this._handleCardDelete();
     }); // событие для корзины если владелец
     }
 
@@ -62,23 +64,17 @@ export default class Card {
     }); // событие для открытия попап картинки
   }
 
-  // переключение лайка
-  _switchLikeIcon() {
-    this._placeLikeButton.classList.toggle('place__like-button_active');
+  _checkOwnLike(likes) {
+    return likes.find(item => item._id === this._userId);
   }
 
-  // удаление карточки
-  _deleteCard() {
-    //подтверждение удаления. удаление в хендлере сабмита
-    const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: (inputValues) => {
-        Promise.resolve(this._api.deleteCard(this._idCard))
-          .then(() => {
-              this._element.remove();
-              this._element = '';
-            }
-          )
-      }
-    });
-    popupConfirm.open();
+  _setLikeCounter(likeCounter) {
+    this._likeCounter.textContent = likeCounter.likes.length;
+    this._currentOwnLike = this._checkOwnLike(likeCounter.likes);
+
+  }
+
+  setLikeON() {
+    this._placeLikeButton.classList.add('place__like-button_active');
   }
 }

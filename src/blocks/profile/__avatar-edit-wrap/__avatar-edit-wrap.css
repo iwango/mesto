@@ -1,0 +1,27 @@
+.profile__avatar-edit-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  overflow: hidden;
+
+}
+
+.profile__avatar-edit-wrap::before {
+  content: "";
+  position: absolute;
+  top: -1;
+  left: -1;
+  width: 102%;
+  height: 102%;
+  background-color: transparent;
+  transition: 0.5s ease-in-out;
+  border-radius: 50%;
+}
+
+.profile__avatar-edit-wrap:hover::before {
+  background-color: rgba(0,0,0,.8);
+
+}

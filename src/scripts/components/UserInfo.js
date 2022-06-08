@@ -20,7 +20,7 @@ export default class UserInfo {
     // this.userAvatar.src = userAvatar;
   }
 
-  setUserAvatar(userAvatar) {
+  setUserAvatar(userAvatar) {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   23
     this.userAvatar.src = userAvatar;
 
   }

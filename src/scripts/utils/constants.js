@@ -20,15 +20,18 @@ export const validationSettings = {
   errorVisibleClass: 'popup__input-error_visible',
   autoFillFormName: '.popup__form-edit-profile',
   formEditProfile:  '.popup__form-edit-profile',
+  formEditAvatar:  '.popup__form-edit-avatar',
   formAddCard: '.popup__form-add-place'
 }
 
 export const popupAddPlace = document.querySelector('.popup_add-place'); // место
 export const popupEditProfile = document.querySelector('.popup_edit-profile'); //профиль
-export const popupDelConfirm = document.querySelector('.deletion-confirmation'); //конфирм
+export const popupEditAvatarProfile = document.querySelector('.popup_edit-avatar'); //профиль
+// export const popupDelConfirm = document.querySelector('.deletion-confirmation'); //конфирм
 
 export const placeAddButton = document.querySelector('.profile__place-add-button'); // добавить место
 export const profileEditButton = document.querySelector('.profile__edit-button'); // редактировать профиль
+export const profileEditAvatarButton = document.querySelector('.profile__avatar-edit-button'); // редактировать профиль
 
 
 // строки из HTML для редактирования профиля

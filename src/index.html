@@ -14,7 +14,10 @@
   </header>
   <main class="content">
     <section class="profile">
-      <img src="<%=require('./images/avatar-custo.jpg')%>" alt="Аватар" class="profile__avatar">
+      <div class="profile__avatar-edit-wrap">
+        <img src="#" alt="Аватар" class="profile__avatar">
+        <button type="button" class="profile__avatar-edit-button" title="Редактировать профиль" aria-label="Редактировать профиль"></button>
+      </div>
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button type="button" class="profile__edit-button" title="Редактировать профиль" aria-label="Редактировать профиль"></button>
@@ -31,7 +34,7 @@
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 </div>
-<div class="popup popup_edit-profile">
+<div class="popup popup_edit-profile popup_opened">
   <div class="popup__container">
     <h3 class="popup__title">Редактировать профиль</h3>
     <form action="#" name="profile_form" class="popup__form popup__form-edit-profile">
@@ -44,7 +47,18 @@
     <button type="button" class="popup__close popup__close-profile" title="Закрыть" aria-label="Закрыть"></button>
   </div>
 </div>
-<div class="popup popup_add-place">
+<div class="popup popup_edit-avatar popup_opened">
+  <div class="popup__container">
+    <h3 class="popup__title">Обновить аватар</h3>
+    <form action="#" name="edit_avatar_form" class="popup__form popup__form-edit-avatar">
+      <input type="url" id="profile_avatar_field" class="popup__input" name="valueProfileAvatar" placeholder="Ссылка на ватар" title="Ссылка на ватар"  required = "required">
+      <span id="profile_avatar_field-error" class="popup__input-error"></span>
+      <button type="submit" class="popup__button-save" title="Сохранить аватар" aria-label="Сохранить аватар">Сохранить</button>
+    </form>
+    <button type="button" class="popup__close popup__close-profile" title="Закрыть" aria-label="Закрыть"></button>
+  </div>
+</div>
+<div class="popup popup_add-place popup_opened">
   <div class="popup__container">
     <h3 class="popup__title">Новое место</h3>
     <form action="#" name="add_place_form" class="popup__form popup__form-add-place">
@@ -58,17 +72,17 @@
   </div>
 </div>
 
-<div class="popup deletion-confirmation">
+<div class="popup deletion-confirmation popup_opened">
   <div class="popup__container">
     <h3 class="popup__title popup__title_confirm">Вы уверены?</h3>
     <form action="#" name="deletion_confirmation_form" class="popup__form">
       <button type="submit" class="popup__button-save" title="Подтвердить удаление" aria-label="Подтвердить удаление">Да</button>
     </form>
-    <button type="button" class="popup__close popup__close-add-place" title="Закрыть" aria-label="Закрыть"></button>
+    <button type="submit" class="popup__close popup__close-add-place" title="Закрыть" aria-label="Закрыть"></button>
   </div>
 </div>
 
-<div class="popup popup_show-image">
+<div class="popup popup_show-image popup_opened">
   <figure class="popup__figure">
     <button type="button" class="popup__close popup__close-show-image" title="Закрыть" aria-label="Закрыть"></button>
     <img src="#" alt="" class="popup__figure-image">

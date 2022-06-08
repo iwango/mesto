@@ -18,52 +18,105 @@ import {
   popupShowImage,
   popupAddPlace,
   popupEditProfile,
-  popupDelConfirm,
+  popupEditAvatarProfile,
   placeAddButton,
   validationSettings,
   profileName,
   profileEmployment,
   profileAvatar,
   profileEditButton,
+  profileEditAvatarButton,
   profileNameField,
-  profileEmploymentField
+  profileEmploymentField,
 } from "../scripts/utils/constants.js";
 
-// Секция для карточек
-/*const defaultCardList = new Section({
-  data: initialCards, renderer:(item) => {
-    // создать карточку
-    createNewCard(item, cardSelector, handleCardClick);
-  }
-}, cardListSelector);*/
 
-const defaultCardList = new Section(cardListSelector);
+const defaultCardList = new Section(cardListSelector, (item) => {
+  const newCard = createNewCard(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
+  defaultCardList.addItem(newCard);
+  });
 
 // создание карточки
-const createNewCard = function (item, cardSelector, handleCardClick) {
-  // console.log(item.likes); // log block delete this ~~~~~~ iwang
-  // console.log(item._id);
-  // console.log(item.owner._id);
-  const card = new Card(item, cardSelector, handleCardClick, api)
+const createNewCard = function (item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId) {
+  // console.log(item.owner._id === userId);
+  // console.log(userID);
+  // console.log(handleCardLike);
+  const card = new Card(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId)    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   38
+  // console.log(card);
   const cardElement = card.generateCard();
-  defaultCardList.addItem(cardElement);
+  return cardElement;
+  // defaultCardList.addItem(cardElement);    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   40
 }
 // функция всплытия карточки
 const popupImage = new PopupWithImage(popupShowImage);
+popupImage.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+
 function handleCardClick(name, link) {
   popupImage.open(name, link);
+}
+function handleCardLike(idCard) {
+  if (this._currentOwnLike) {
+    api.deleteLikeCard(idCard)    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   72
+        .then((likes) => {
+          this._setLikeCounter(likes);
+          this._placeLikeButton.classList.remove('place__like-button_active');
+        })
+        .catch((error) =>{
+          console.log(error);
+        })
+    } else {
+      api.addLikeCard(idCard)
+        .then((likes) => {
+          this._setLikeCounter(likes);
+          this._placeLikeButton.classList.add('place__like-button_active');
+          }
+        )
+        .catch((error) =>{
+          console.log(error);
+        })
+    }
+}
+const popupDelConfirm = document.querySelector('.deletion-confirmation'); //попап конфирм;    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   2
+
+function handleCardDelete() {
+  console.log('del index');
+  //подтверждение удаления. удаление в хендлере сабмита
+  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   90
+      popupConfirm.offSubmitButton();
+      api.deleteCard(this._idCard)
+        .then(() => {
+            this._element.remove();
+          }
+        )
+        .catch((error) =>{
+          console.log(error);
+        })
+        .finally(()=> popupConfirm.onSubmitButton());
+    }
+  });
+  popupConfirm.setEventListeners(); // события мышки
+  popupConfirm.open();
 }
 
 // попап добавления новой карточки
   const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
     //создать новую карточку, в inputValues значения инпутов из формы
-      Promise.resolve(api.addNewCard(inputValues.name, inputValues.link))
-        .then((newCard) => {
-          console.log(newCard);
-      createNewCard(newCard, cardSelector, handleCardClick);
-        });
+      popupAddCard.offSubmitButton();
+     api.addNewCard(inputValues.name, inputValues.link)
+        .then((newCard) => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   53
+      newCard = createNewCard(newCard, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
+      defaultCardList.addItem(newCard);
+        })
+       .catch((error) =>{
+         console.log(error);
+       })
+       .finally(()=> popupAddCard.onSubmitButton());    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   57
+
     }
   });
+popupAddCard.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+
+
 function openPopupAddPlace() {
   newCardValidation.resetValidation(); // очистка ошибок перед открытием
   newCardValidation.toggleButtonState(); // установка валидности сабмит
@@ -75,11 +128,18 @@ const profileInfo = new UserInfo({profileName, profileEmployment, profileAvatar}
 
   // попап редактировать профиль
   const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues) => {
-    // заполнить профиль из инпутов
-      api.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
-      profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
+      popupEditUser.offSubmitButton();
+      // заполнить профиль из инпутов
+      api.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment)
+        .catch((error) =>{
+          console.log(error);
+        })
+        .finally(()=> popupEditUser.onSubmitButton());
+      profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   77
     }
   });
+  popupEditUser.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+
 function openPopupEditProfile() {
   const userInfo = profileInfo.getUserInfo();
   profileNameField.value = userInfo.name;
@@ -90,8 +150,28 @@ function openPopupEditProfile() {
   popupEditUser.open();
 }
 
+const popupEditAvatar = new PopupWithForm({popupSelector: popupEditAvatarProfile, handleFormSubmit: (inputValues) => {
+  popupEditAvatar.offSubmitButton();
+  api.setAvatarInfo(inputValues.valueProfileAvatar)
+    .then((userInfo) => profileInfo.setUserAvatar(userInfo.avatar)
+    )
+    .catch((error) =>{
+      console.log(error);
+    })
+    .finally(()=> popupEditAvatar.onSubmitButton());
+
+  }});
+popupEditAvatar.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+
+
+function openPopupEdiAvatar() {
+  profileAvatarValidation.resetValidation();
+  profileAvatarValidation.toggleButtonState();
+  popupEditAvatar.open();
+}
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
+profileEditAvatarButton.addEventListener('click', openPopupEdiAvatar); // редактировать профиль
 placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
 
 // валидаци формы добавить карточку
@@ -104,15 +184,10 @@ const formEditProfile = document.querySelector(validationSettings.formEditProfil
 const profileValidation = new FormValidator(validationSettings, formEditProfile);
 profileValidation.enableValidation();
 
-// Разовая инициализация попап окон добавлением display flex. Отключает анимацию попап окон при загрузке.
-(function () {
-  popupEditProfile.classList.add('popup_opened');
-  popupAddPlace.classList.add('popup_opened');
-  popupShowImage.classList.add('popup_opened');
-  popupDelConfirm.classList.add('popup_opened');
-}());
+// валидация аватар
+const profileAvatarValidation = new FormValidator(validationSettings, document.querySelector(validationSettings.formEditAvatar));
+profileAvatarValidation.enableValidation();
 
- // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
   headers: {
@@ -121,19 +196,25 @@ const api = new Api({
   }
 });
 
-Promise.resolve(api.getUserInfo())
+
+let userId;
+api.getUserInfo()
   .then((userInfo) => {
     profileInfo.setUserInfo(userInfo.name, userInfo.about);
     profileInfo.setUserAvatar(userInfo.avatar)
+    userId = userInfo._id;
+  })
+  .catch((error) =>{
+    console.log(error);
   })
 
-Promise.resolve(api.getInitialCards())
+api.getInitialCards()    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   138
   .then((initialCards) => {
-    initialCards.forEach((item) => {
+      defaultCardList.renderItems(initialCards);
+/*    initialCards.forEach((item) => {
       createNewCard(item, cardSelector,handleCardClick);
-    })
+    })*/
   })
-
-
-
- // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
+  .catch((error) =>{
+    console.log(error);
+  })
