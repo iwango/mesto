@@ -3,6 +3,7 @@ export default class Card {
     this._name = dataCard.name;
     this._altDescription = dataCard.name;
     this._link = dataCard.link;
+    this._likes = dataCard.likes;
     this._cardSelector = cardSelector;
     this._showPopupPlaceImage = showPopupPlaceImage;
   }
@@ -20,6 +21,7 @@ export default class Card {
 
   // генерация карточки с данными и событиями
   generateCard() {
+    console.log(this._likes, 'это лайки');
     this._element = this._getTemplate(); // взять шаблон
 
     // заполнение карточки

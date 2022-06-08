@@ -40,11 +40,11 @@ const defaultCardList = new Section(cardListSelector);
 
 // создание карточки
 const createNewCard = function (item, cardSelector, handleCardClick) {
+  // console.log(item.likes); // log block delete this ~~~~~~ iwang
   const card = new Card(item, cardSelector, handleCardClick)
   const cardElement = card.generateCard();
   defaultCardList.addItem(cardElement);
 }
-const tempiwang = 1;
 // функция всплытия карточки
 const popupImage = new PopupWithImage(popupShowImage);
 function handleCardClick(name, link) {
@@ -54,7 +54,12 @@ function handleCardClick(name, link) {
 // попап добавления новой карточки
   const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
     //создать новую карточку, в inputValues значения инпутов из формы
-      createNewCard(inputValues, cardSelector, handleCardClick);
+      console.log(inputValues);
+      Promise.resolve(api.addNewCard(inputValues.name, inputValues.link))
+        .then((newCard) => {
+          console.log(newCard);
+      createNewCard(newCard, cardSelector, handleCardClick);
+        });
     }
   });
 function openPopupAddPlace() {
@@ -125,6 +130,7 @@ Promise.resolve(api.getInitialCards())
       createNewCard(item, cardSelector,handleCardClick);
     })
   })
+
 
 
  // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang

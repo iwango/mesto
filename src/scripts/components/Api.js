@@ -58,6 +58,21 @@ export default class Api {
       .then((response) => this._checkRequest(response));
   }
 
+  addNewCard(name, link) {
+    return fetch(`${this.apiUrl}/cards`, {
+      method: 'POST',
+      headers: {
+        authorization: this.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        link: link
+      })
+    })
+      .then((response) => this._checkRequest(response));
+  }
+
   // другие методы работы с API
 }
 
