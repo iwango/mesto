@@ -21,14 +21,17 @@ export default class Card {
 
   // генерация карточки с данными и событиями
   generateCard() {
-    console.log(this._likes, 'это лайки');
     this._element = this._getTemplate(); // взять шаблон
+    this._likeCounter = this._element.querySelector('.place__like-counter')
+    // console.log(this._likeCounter);
+    // console.log(this._likes.length, 'это лайки');
 
     // заполнение карточки
     this._cardImage = this._element.querySelector('.place__img'); // переменная для картинки карточки
     this._element.querySelector('.place__title').textContent = this._name;
     this._cardImage.alt = this._altDescription;
     this._cardImage.src = this._link;
+    this._likeCounter.textContent = this._likes.length;
 
     // установить события для карточки
     this._setEventListeners();
