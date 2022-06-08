@@ -1,3 +1,6 @@
+import PopupWithForm from "./PopupWithForm";
+import {popupDelConfirm} from "../utils/constants";
+
 export default class Card {
   constructor(dataCard, cardSelector, showPopupPlaceImage) {
     this._name = dataCard.name;
@@ -59,7 +62,12 @@ export default class Card {
 
   // удаление карточки
   _deleteCard() {
-    this._element.remove()
-    this._element = '';
+    //подтверждение удаления. удаление в хендлере сабмита
+    const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: (inputValues) => {
+        this._element.remove()
+        this._element = '';
+      }
+    });
+    popupConfirm.open();
   }
 }

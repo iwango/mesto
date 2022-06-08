@@ -18,6 +18,7 @@ import {
   popupShowImage,
   popupAddPlace,
   popupEditProfile,
+  popupDelConfirm,
   placeAddButton,
   validationSettings,
   profileName,
@@ -54,7 +55,6 @@ function handleCardClick(name, link) {
 // попап добавления новой карточки
   const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
     //создать новую карточку, в inputValues значения инпутов из формы
-      console.log(inputValues);
       Promise.resolve(api.addNewCard(inputValues.name, inputValues.link))
         .then((newCard) => {
           console.log(newCard);
@@ -107,6 +107,7 @@ profileValidation.enableValidation();
   popupEditProfile.classList.add('popup_opened');
   popupAddPlace.classList.add('popup_opened');
   popupShowImage.classList.add('popup_opened');
+  popupDelConfirm.classList.add('popup_opened');
 }());
 
  // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
