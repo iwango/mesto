@@ -42,7 +42,9 @@ const defaultCardList = new Section(cardListSelector);
 // создание карточки
 const createNewCard = function (item, cardSelector, handleCardClick) {
   // console.log(item.likes); // log block delete this ~~~~~~ iwang
-  const card = new Card(item, cardSelector, handleCardClick)
+  // console.log(item._id);
+  // console.log(item.owner._id);
+  const card = new Card(item, cardSelector, handleCardClick, api)
   const cardElement = card.generateCard();
   defaultCardList.addItem(cardElement);
 }
