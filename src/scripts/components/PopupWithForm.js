@@ -9,6 +9,22 @@ export default class PopupWithForm extends Popup {
     this._inputList = this._popupForm.querySelectorAll(validationSettings.inputSelector);
     this._submitButton = this._popup.querySelector(validationSettings.submitButtonSelector);
     this._submitEvent = this._submitEvent.bind(this);
+    this._offSubmitText = 'Сохранение...';
+    this._onSubmitText = popupSelector.querySelector('.popup__button-save').textContent;
+  }
+
+  offSubmitButton() {
+    this._submitButton.textContent = this._offSubmitText;
+    this._submitButton.disabled = true;
+    this._submitButton.classList.add('popup__button-save_disabled');
+  }
+
+  onSubmitButton() {
+    this.close();
+    this._submitButton.textContent = this._onSubmitText;
+    this._submitButton.disabled = false;
+    this._submitButton.classList.remove('popup__button-save_disabled');
+
   }
 
   close() {
@@ -24,8 +40,8 @@ export default class PopupWithForm extends Popup {
 
   _submitEvent(evt) {
     evt.preventDefault();
-    this._handleFormSubmit(this._getInputValues(this._inputList));
-    this.close();
+    this._handleFormSubmit(this._getInputValues(this._inputList), this);
+    // this.close();
   }
 
   _getInputValues(inputList) {

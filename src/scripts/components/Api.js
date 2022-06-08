@@ -1,6 +1,5 @@
 export default class Api {
   constructor(options) {
-    // тело конструктора
     this.apiUrl = options.baseUrl;
     this.token = options.headers.authorization;
 
@@ -8,10 +7,10 @@ export default class Api {
 
   _checkRequest(response) {
     if(response.ok) {
-      console.log(response);
+      // console.log(response, 'проверка'); // log block delete this ~~~~~~ iwang
       return response.json();
     } else {
-      return Promise.reject(`Код ошибки ${response.status} - текст ошибки ${response.statusText}`);
+      return reject(`Код ошибки ${response.status} - текст ошибки ${response.statusText}`);
     }
   }
 
@@ -22,14 +21,10 @@ export default class Api {
      }
    })
      .then((response) => this._checkRequest(response))
-/*     .then((result) => {
-       console.log(result, 22);
-       console.log(result.name, result.about);
-       return result
-     })*/
-
+     .catch((error) =>{
+       console.log(error);
+     })
   }
-
 
   getInitialCards() {
     return fetch(`${this.apiUrl}/cards`, {
@@ -38,9 +33,9 @@ export default class Api {
       }
     })
       .then((response) => this._checkRequest(response))
-/*      .then((result) => {
-        console.log(result);
-      })*/
+      .catch((error) =>{
+        console.log(error);
+      })
   }
 
   setUserInfo(name, about) {
@@ -55,7 +50,10 @@ export default class Api {
         about: about
       })
     })
-      .then((response) => this._checkRequest(response));
+      .then((response) => this._checkRequest(response))
+      .catch((error) =>{
+        console.log(error);
+      })
   }
 
   addNewCard(name, link) {
@@ -70,7 +68,10 @@ export default class Api {
         link: link
       })
     })
-      .then((response) => this._checkRequest(response));
+      .then((response) => this._checkRequest(response))
+      .catch((error) =>{
+        console.log(error);
+      })
   }
 
   deleteCard(idCard) {
@@ -80,9 +81,53 @@ export default class Api {
         authorization: this.token
       }
     })
-      .then((response) => this._checkRequest(response));
+      .then((response) => this._checkRequest(response))
+      .catch((error) =>{
+        console.log(error);
+      })
   }
 
-  // другие методы работы с API
+  addLikeCard(idCard) {
+    return fetch(`${this.apiUrl}/cards/${idCard}/likes`, {
+      method: 'PUT',
+      headers: {
+        authorization: this.token
+      }
+    })
+      .then((response) => this._checkRequest(response))
+      .catch((error) =>{
+        console.log(error);
+      })
+  }
+
+  deleteLikeCard(idCard) {
+    return fetch(`${this.apiUrl}/cards/${idCard}/likes`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this.token
+      }
+    })
+      .then((response) => this._checkRequest(response))
+      .catch((error) =>{
+        console.log(error);
+      })
+  }
+
+  setAvatarInfo(avatar) {
+    return fetch(`${this.apiUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: avatar
+      })
+    })
+      .then((response) => this._checkRequest(response))
+      .catch((error) =>{
+        console.log(error);
+      })
+  }
 }
 

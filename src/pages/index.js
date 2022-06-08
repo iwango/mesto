@@ -18,32 +18,23 @@ import {
   popupShowImage,
   popupAddPlace,
   popupEditProfile,
-  popupDelConfirm,
+  popupEditAvatarProfile,
   placeAddButton,
   validationSettings,
   profileName,
   profileEmployment,
   profileAvatar,
   profileEditButton,
+  profileEditAvatarButton,
   profileNameField,
   profileEmploymentField
 } from "../scripts/utils/constants.js";
 
-// Секция для карточек
-/*const defaultCardList = new Section({
-  data: initialCards, renderer:(item) => {
-    // создать карточку
-    createNewCard(item, cardSelector, handleCardClick);
-  }
-}, cardListSelector);*/
 
 const defaultCardList = new Section(cardListSelector);
 
 // создание карточки
 const createNewCard = function (item, cardSelector, handleCardClick) {
-  // console.log(item.likes); // log block delete this ~~~~~~ iwang
-  // console.log(item._id);
-  // console.log(item.owner._id);
   const card = new Card(item, cardSelector, handleCardClick, api)
   const cardElement = card.generateCard();
   defaultCardList.addItem(cardElement);
@@ -55,13 +46,16 @@ function handleCardClick(name, link) {
 }
 
 // попап добавления новой карточки
-  const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
+  const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues, popup) => {
     //создать новую карточку, в inputValues значения инпутов из формы
-      Promise.resolve(api.addNewCard(inputValues.name, inputValues.link))
+      popup.offSubmitButton();
+     api.addNewCard(inputValues.name, inputValues.link)
         .then((newCard) => {
-          console.log(newCard);
       createNewCard(newCard, cardSelector, handleCardClick);
-        });
+        })
+       .then(()=>popup.onSubmitButton())
+       .finally(()=> popup.onSubmitButton());
+
     }
   });
 function openPopupAddPlace() {
@@ -74,12 +68,16 @@ function openPopupAddPlace() {
 const profileInfo = new UserInfo({profileName, profileEmployment, profileAvatar});
 
   // попап редактировать профиль
-  const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues) => {
-    // заполнить профиль из инпутов
-      api.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
+  const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues, popup) => {
+      popup.offSubmitButton();
+      // заполнить профиль из инпутов
+      api.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment)
+        .then(()=>popup.onSubmitButton())
+        .finally(()=> popup.onSubmitButton());
       profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
     }
   });
+
 function openPopupEditProfile() {
   const userInfo = profileInfo.getUserInfo();
   profileNameField.value = userInfo.name;
@@ -90,8 +88,23 @@ function openPopupEditProfile() {
   popupEditUser.open();
 }
 
+const popupEditAvatar = new PopupWithForm({popupSelector: popupEditAvatarProfile, handleFormSubmit: (inputValues, popup) => {
+  popup.offSubmitButton();
+  api.setAvatarInfo(inputValues.valueProfileAvatar)
+    .then((userInfo) => profileInfo.setUserAvatar(userInfo.avatar)
+    )
+    .then(()=>popup.onSubmitButton())
+    .finally(()=> popup.onSubmitButton());
+
+  }});
+function openPopupEdiAvatar() {
+  profileAvatarValidation.resetValidation();
+  profileAvatarValidation.toggleButtonState();
+  popupEditAvatar.open();
+}
 // прослушивание событий
 profileEditButton.addEventListener('click', openPopupEditProfile); // редактировать профиль
+profileEditAvatarButton.addEventListener('click', openPopupEdiAvatar); // редактировать профиль
 placeAddButton.addEventListener('click', openPopupAddPlace); // добавить место
 
 // валидаци формы добавить карточку
@@ -104,15 +117,10 @@ const formEditProfile = document.querySelector(validationSettings.formEditProfil
 const profileValidation = new FormValidator(validationSettings, formEditProfile);
 profileValidation.enableValidation();
 
-// Разовая инициализация попап окон добавлением display flex. Отключает анимацию попап окон при загрузке.
-(function () {
-  popupEditProfile.classList.add('popup_opened');
-  popupAddPlace.classList.add('popup_opened');
-  popupShowImage.classList.add('popup_opened');
-  popupDelConfirm.classList.add('popup_opened');
-}());
+// валидация аватар
+const profileAvatarValidation = new FormValidator(validationSettings, document.querySelector(validationSettings.formEditAvatar));
+profileAvatarValidation.enableValidation();
 
- // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
   headers: {
@@ -121,19 +129,15 @@ const api = new Api({
   }
 });
 
-Promise.resolve(api.getUserInfo())
+api.getUserInfo()
   .then((userInfo) => {
     profileInfo.setUserInfo(userInfo.name, userInfo.about);
     profileInfo.setUserAvatar(userInfo.avatar)
   })
 
-Promise.resolve(api.getInitialCards())
+api.getInitialCards()
   .then((initialCards) => {
     initialCards.forEach((item) => {
       createNewCard(item, cardSelector,handleCardClick);
     })
   })
-
-
-
- // log block delete this ~~~~~~ iwang // log block delete this ~~~~~~ iwang
