@@ -69,6 +69,7 @@ const profileInfo = new UserInfo({profileName, profileEmployment, profileAvatar}
   // попап редактировать профиль
   const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues) => {
     // заполнить профиль из инпутов
+      api.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
       profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
     }
   });
@@ -114,7 +115,8 @@ const api = new Api({
 
 Promise.resolve(api.getUserInfo())
   .then((userInfo) => {
-    profileInfo.setUserInfo(userInfo.name, userInfo.about, userInfo.avatar)
+    profileInfo.setUserInfo(userInfo.name, userInfo.about);
+    profileInfo.setUserAvatar(userInfo.avatar)
   })
 
 Promise.resolve(api.getInitialCards())

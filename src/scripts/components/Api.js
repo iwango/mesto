@@ -8,6 +8,7 @@ export default class Api {
 
   _checkRequest(response) {
     if(response.ok) {
+      console.log(response);
       return response.json();
     } else {
       return Promise.reject(`Код ошибки ${response.status} - текст ошибки ${response.statusText}`);
@@ -42,6 +43,20 @@ export default class Api {
       })*/
   }
 
+  setUserInfo(name, about) {
+    return fetch(`${this.apiUrl}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        about: about
+      })
+    })
+      .then((response) => this._checkRequest(response));
+  }
 
   // другие методы работы с API
 }
