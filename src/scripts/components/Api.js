@@ -17,7 +17,6 @@ export default class Api {
      headers: this.headers
    })
      .then((response) => this._checkRequest(response))
-
   }
 
   getInitialCards() {

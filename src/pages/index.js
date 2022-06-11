@@ -28,7 +28,10 @@ import {
   profileEditAvatarButton,
   profileNameField,
   profileEmploymentField,
+  popupDelConfirm,
 } from "../scripts/utils/constants.js";
+
+let userId; // переменная ID екущего пользователя
 
 
 const defaultCardList = new Section(cardListSelector, (item) => {
@@ -38,25 +41,20 @@ const defaultCardList = new Section(cardListSelector, (item) => {
 
 // создание карточки
 const createNewCard = function (item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId) {
-  // console.log(item.owner._id === userId);
-  // console.log(userID);
-  // console.log(handleCardLike);
-  const card = new Card(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId)    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   38
-  // console.log(card);
+  const card = new Card(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
   const cardElement = card.generateCard();
   return cardElement;
-  // defaultCardList.addItem(cardElement);    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   40
 }
 // функция всплытия карточки
 const popupImage = new PopupWithImage(popupShowImage);
-popupImage.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+popupImage.setEventListeners(); // разовая инициализация слушателей на экзепляр
 
 function handleCardClick(name, link) {
   popupImage.open(name, link);
 }
 function handleCardLike(idCard) {
   if (this._currentOwnLike) {
-    api.deleteLikeCard(idCard)    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   72
+    api.deleteLikeCard(idCard)
         .then((likes) => {
           this._setLikeCounter(likes);
           this._placeLikeButton.classList.remove('place__like-button_active');
@@ -76,18 +74,17 @@ function handleCardLike(idCard) {
         })
     }
 }
-const popupDelConfirm = document.querySelector('.deletion-confirmation'); //попап конфирм;    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   2
 
 function handleCardDelete() {
-  console.log('del index');
   //подтверждение удаления. удаление в хендлере сабмита
-  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   90
+  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {
       popupConfirm.offSubmitButton();
       api.deleteCard(this._idCard)
         .then(() => {
             this._element.remove();
           }
         )
+        .then(() => popupConfirm.close())
         .catch((error) =>{
           console.log(error);
         })
@@ -103,14 +100,15 @@ function handleCardDelete() {
     //создать новую карточку, в inputValues значения инпутов из формы
       popupAddCard.offSubmitButton();
      api.addNewCard(inputValues.name, inputValues.link)
-        .then((newCard) => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   53
+        .then((newCard) => {
       newCard = createNewCard(newCard, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
       defaultCardList.addItem(newCard);
         })
+       .then(() => popupAddCard.close())
        .catch((error) =>{
          console.log(error);
        })
-       .finally(()=> popupAddCard.onSubmitButton());    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   57
+       .finally(()=> popupAddCard.onSubmitButton());
 
     }
   });
@@ -131,14 +129,15 @@ const profileInfo = new UserInfo({profileName, profileEmployment, profileAvatar}
       popupEditUser.offSubmitButton();
       // заполнить профиль из инпутов
       api.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment)
+        .then(() => popupEditUser.close())
+        .then(()=>profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment))
         .catch((error) =>{
           console.log(error);
         })
         .finally(()=> popupEditUser.onSubmitButton());
-      profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   77
     }
   });
-  popupEditUser.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+  popupEditUser.setEventListeners();
 
 function openPopupEditProfile() {
   const userInfo = profileInfo.getUserInfo();
@@ -155,13 +154,14 @@ const popupEditAvatar = new PopupWithForm({popupSelector: popupEditAvatarProfile
   api.setAvatarInfo(inputValues.valueProfileAvatar)
     .then((userInfo) => profileInfo.setUserAvatar(userInfo.avatar)
     )
+    .then(() => popupEditAvatar.close())
     .catch((error) =>{
       console.log(error);
     })
     .finally(()=> popupEditAvatar.onSubmitButton());
 
   }});
-popupEditAvatar.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+popupEditAvatar.setEventListeners();
 
 
 function openPopupEdiAvatar() {
@@ -196,24 +196,16 @@ const api = new Api({
   }
 });
 
-
-let userId;
-api.getUserInfo()
-  .then((userInfo) => {
+// Выполнение начальной обработки только после исполнения обоих запросов
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userInfo, initialCards]) => {
+    // обработка данных пользователя с сервера
     profileInfo.setUserInfo(userInfo.name, userInfo.about);
     profileInfo.setUserAvatar(userInfo.avatar)
     userId = userInfo._id;
-  })
-  .catch((error) =>{
-    console.log(error);
-  })
 
-api.getInitialCards()    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   138
-  .then((initialCards) => {
-      defaultCardList.renderItems(initialCards);
-/*    initialCards.forEach((item) => {
-      createNewCard(item, cardSelector,handleCardClick);
-    })*/
+    // Обработка карточек с сервера
+    defaultCardList.renderItems(initialCards);
   })
   .catch((error) =>{
     console.log(error);

@@ -19,11 +19,10 @@ export default class PopupWithForm extends Popup {
   }
 
   onSubmitButton() {
-    this.close();
     this._submitButton.textContent = this._onSubmitText;
     this._submitButton.disabled = false;
     this._submitButton.classList.remove('popup__button-save_disabled');
-
+    // this.close();
   }
 
   close() {
