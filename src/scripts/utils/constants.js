@@ -45,3 +45,4 @@ export const popupFormEditProfile = popupEditProfile.querySelector('.popup__form
 // редактор профиля
 export const profileNameField = popupFormEditProfile.querySelector('#profile_name_field');
 export const profileEmploymentField = popupFormEditProfile.querySelector('#profile_employment_field');
+export const popupDelConfirm = document.querySelector('.deletion-confirmation'); //попап конфирм;

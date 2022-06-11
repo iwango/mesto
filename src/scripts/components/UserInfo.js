@@ -13,14 +13,12 @@ export default class UserInfo {
   }
 
   setUserInfo(userName, userInfo, userAvatar) {
-
-
     this.userName.textContent = userName;
     this.userInfo.textContent = userInfo;
     // this.userAvatar.src = userAvatar;
   }
 
-  setUserAvatar(userAvatar) {
+  setUserAvatar(userAvatar) {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   23
     this.userAvatar.src = userAvatar;
 
   }

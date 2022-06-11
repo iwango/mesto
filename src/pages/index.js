@@ -27,37 +27,94 @@ import {
   profileEditButton,
   profileEditAvatarButton,
   profileNameField,
-  profileEmploymentField
+  profileEmploymentField,
+  popupDelConfirm,
 } from "../scripts/utils/constants.js";
 
+let userId; // переменная ID екущего пользователя
 
-const defaultCardList = new Section(cardListSelector);
+
+const defaultCardList = new Section(cardListSelector, (item) => {
+  const newCard = createNewCard(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
+  defaultCardList.addItem(newCard);
+  });
 
 // создание карточки
-const createNewCard = function (item, cardSelector, handleCardClick) {
-  const card = new Card(item, cardSelector, handleCardClick, api)
+const createNewCard = function (item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId) {
+  const card = new Card(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
   const cardElement = card.generateCard();
-  defaultCardList.addItem(cardElement);
+  return cardElement;
 }
 // функция всплытия карточки
 const popupImage = new PopupWithImage(popupShowImage);
+popupImage.setEventListeners(); // разовая инициализация слушателей на экзепляр
+
 function handleCardClick(name, link) {
   popupImage.open(name, link);
 }
+function handleCardLike(idCard) {
+  if (this._currentOwnLike) {
+    api.deleteLikeCard(idCard)
+        .then((likes) => {
+          this._setLikeCounter(likes);
+          this._placeLikeButton.classList.remove('place__like-button_active');
+        })
+        .catch((error) =>{
+          console.log(error);
+        })
+    } else {
+      api.addLikeCard(idCard)
+        .then((likes) => {
+          this._setLikeCounter(likes);
+          this._placeLikeButton.classList.add('place__like-button_active');
+          }
+        )
+        .catch((error) =>{
+          console.log(error);
+        })
+    }
+}
+
+function handleCardDelete() {
+  //подтверждение удаления. удаление в хендлере сабмита
+  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {
+      popupConfirm.offSubmitButton();
+      api.deleteCard(this._idCard)
+        .then(() => {
+            this._element.remove();
+          }
+        )
+        .then(() => popupConfirm.close())
+        .catch((error) =>{
+          console.log(error);
+        })
+        .finally(()=> popupConfirm.onSubmitButton());
+    }
+  });
+  popupConfirm.setEventListeners(); // события мышки
+  popupConfirm.open();
+}
 
 // попап добавления новой карточки
-  const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues, popup) => {
+  const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
     //создать новую карточку, в inputValues значения инпутов из формы
-      popup.offSubmitButton();
+      popupAddCard.offSubmitButton();
      api.addNewCard(inputValues.name, inputValues.link)
         .then((newCard) => {
-      createNewCard(newCard, cardSelector, handleCardClick);
+      newCard = createNewCard(newCard, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
+      defaultCardList.addItem(newCard);
         })
-       .then(()=>popup.onSubmitButton())
-       .finally(()=> popup.onSubmitButton());
+       .then(() => popupAddCard.close())
+       .catch((error) =>{
+         console.log(error);
+       })
+       .finally(()=> popupAddCard.onSubmitButton());
 
     }
   });
+popupAddCard.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+
+
 function openPopupAddPlace() {
   newCardValidation.resetValidation(); // очистка ошибок перед открытием
   newCardValidation.toggleButtonState(); // установка валидности сабмит
@@ -68,15 +125,19 @@ function openPopupAddPlace() {
 const profileInfo = new UserInfo({profileName, profileEmployment, profileAvatar});
 
   // попап редактировать профиль
-  const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues, popup) => {
-      popup.offSubmitButton();
+  const popupEditUser = new PopupWithForm({popupSelector: popupEditProfile, handleFormSubmit: (inputValues) => {
+      popupEditUser.offSubmitButton();
       // заполнить профиль из инпутов
       api.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment)
-        .then(()=>popup.onSubmitButton())
-        .finally(()=> popup.onSubmitButton());
-      profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment);
+        .then(() => popupEditUser.close())
+        .then(()=>profileInfo.setUserInfo(inputValues.valueProfileName, inputValues.valueProfileEmployment))
+        .catch((error) =>{
+          console.log(error);
+        })
+        .finally(()=> popupEditUser.onSubmitButton());
     }
   });
+  popupEditUser.setEventListeners();
 
 function openPopupEditProfile() {
   const userInfo = profileInfo.getUserInfo();
@@ -88,15 +149,21 @@ function openPopupEditProfile() {
   popupEditUser.open();
 }
 
-const popupEditAvatar = new PopupWithForm({popupSelector: popupEditAvatarProfile, handleFormSubmit: (inputValues, popup) => {
-  popup.offSubmitButton();
+const popupEditAvatar = new PopupWithForm({popupSelector: popupEditAvatarProfile, handleFormSubmit: (inputValues) => {
+  popupEditAvatar.offSubmitButton();
   api.setAvatarInfo(inputValues.valueProfileAvatar)
     .then((userInfo) => profileInfo.setUserAvatar(userInfo.avatar)
     )
-    .then(()=>popup.onSubmitButton())
-    .finally(()=> popup.onSubmitButton());
+    .then(() => popupEditAvatar.close())
+    .catch((error) =>{
+      console.log(error);
+    })
+    .finally(()=> popupEditAvatar.onSubmitButton());
 
   }});
+popupEditAvatar.setEventListeners();
+
+
 function openPopupEdiAvatar() {
   profileAvatarValidation.resetValidation();
   profileAvatarValidation.toggleButtonState();
@@ -129,15 +196,17 @@ const api = new Api({
   }
 });
 
-api.getUserInfo()
-  .then((userInfo) => {
+// Выполнение начальной обработки только после исполнения обоих запросов
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userInfo, initialCards]) => {
+    // обработка данных пользователя с сервера
     profileInfo.setUserInfo(userInfo.name, userInfo.about);
     profileInfo.setUserAvatar(userInfo.avatar)
-  })
+    userId = userInfo._id;
 
-api.getInitialCards()
-  .then((initialCards) => {
-    initialCards.forEach((item) => {
-      createNewCard(item, cardSelector,handleCardClick);
-    })
+    // Обработка карточек с сервера
+    defaultCardList.renderItems(initialCards);
+  })
+  .catch((error) =>{
+    console.log(error);
   })

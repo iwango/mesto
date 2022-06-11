@@ -8,19 +8,17 @@ export default class Popup {
 
   open() {
     this._popup.classList.add('popup__visible'); // включаем попап
-    this.setEventListeners(); // установка слушателей
+    document.addEventListener('keydown', this._handleEscClose);
   }
 
   setEventListeners() {
     this._popup.addEventListener('mousedown', this._mouseEvent);
-    document.addEventListener('keydown', this._handleEscClose);
   }
 
   close() {
     this._popup.classList.remove('popup__visible'); // спяртать окно
     // удалить слушатели
     document.removeEventListener('keydown', this._handleEscClose); // слушать клавиши
-    this._popup.removeEventListener('mousedown', this._mouseEvent); // слушать клики
   }
 
   _handleEscClose(evt) {
