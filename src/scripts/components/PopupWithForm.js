@@ -1,5 +1,5 @@
 import Popup from "./Popup.js";
-import {validationSettings} from "../utils/constants.js";
+import {validationSettings} from "../utils/constants.js";    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   2
 
 export default class PopupWithForm extends Popup {
   constructor({popupSelector, handleFormSubmit}) {
@@ -27,7 +27,7 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    this._popupForm.removeEventListener('submit', this._submitEvent);
+    this._popupForm.removeEventListener('submit', this._submitEvent);    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   30
     this._popupForm.reset();
     super.close();
   }
@@ -39,7 +39,7 @@ export default class PopupWithForm extends Popup {
 
   _submitEvent(evt) {
     evt.preventDefault();
-    this._handleFormSubmit(this._getInputValues(this._inputList));
+    this._handleFormSubmit(this._getInputValues(this._inputList));    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   42
     // this.close();
   }
 

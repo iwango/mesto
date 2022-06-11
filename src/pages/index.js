@@ -35,7 +35,7 @@ let userId; // переменная ID екущего пользователя
 
 
 const defaultCardList = new Section(cardListSelector, (item) => {
-  const newCard = createNewCard(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
+  const newCard = createNewCard(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   38
   defaultCardList.addItem(newCard);
   });
 
@@ -53,11 +53,11 @@ function handleCardClick(name, link) {
   popupImage.open(name, link);
 }
 function handleCardLike(idCard) {
-  if (this._currentOwnLike) {
+  if (this._currentOwnLike) {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   56
     api.deleteLikeCard(idCard)
         .then((likes) => {
           this._setLikeCounter(likes);
-          this._placeLikeButton.classList.remove('place__like-button_active');
+          this._placeLikeButton.classList.remove('place__like-button_active');    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   60
         })
         .catch((error) =>{
           console.log(error);
@@ -77,7 +77,7 @@ function handleCardLike(idCard) {
 
 function handleCardDelete() {
   //подтверждение удаления. удаление в хендлере сабмита
-  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {
+  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   80
       popupConfirm.offSubmitButton();
       api.deleteCard(this._idCard)
         .then(() => {
