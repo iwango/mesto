@@ -8,12 +8,7 @@ export default class Section {
     this._container.prepend(element);
   }
 
-  clear() {
-    this._container.innerHTML = '';
-  }
-
   renderItems(renderedItems) {
-    this.clear();    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   16
     renderedItems.reverse().forEach(item => {
       this._renderer(item);
     });
