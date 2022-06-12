@@ -12,7 +12,7 @@ export default class Card {
     this._userId = userId;
     this._ownCard = dataCard.owner._id === userId ? true: false; // проверка владельца
     this._idCard = dataCard._id;
-    this._currentOwnLike = this._checkOwnLike(this._likes);
+    this.currentOwnLike = this._checkOwnLike(this._likes);
   }
 
   // создание клона шаблона карточки
@@ -37,12 +37,12 @@ export default class Card {
     this._cardImage.src = this._link;
     this._placeLikeButton = this._element.querySelector('.place__like-button'); // переменная для лайка
 
-    this._setLikeCounter(this._dataCard);
+    this.setLikeCounter(this._dataCard);
     if (!this._ownCard) {
       this._element.querySelector('.place__delete-button').remove(); // удалить корзину если не владелец
     }
-    if (this._currentOwnLike) {
-      this.setLikeON();
+    if (this.currentOwnLike) {
+      this.setLikeOn();
     }
 
     // установить события для карточки
@@ -68,13 +68,16 @@ export default class Card {
     return likes.find(item => item._id === this._userId);
   }
 
-  _setLikeCounter(likeCounter) {
+  setLikeCounter(likeCounter) {
     this._likeCounter.textContent = likeCounter.likes.length;
-    this._currentOwnLike = this._checkOwnLike(likeCounter.likes);
+    this.currentOwnLike = this._checkOwnLike(likeCounter.likes);
 
   }
 
-  setLikeON() {
+  setLikeOn() {
     this._placeLikeButton.classList.add('place__like-button_active');
+  }
+  setLikeOff() {
+    this._placeLikeButton.classList.remove('place__like-button_active');
   }
 }

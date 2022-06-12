@@ -42,8 +42,7 @@ const defaultCardList = new Section(cardListSelector, (item) => {
 // создание карточки
 const createNewCard = function (item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId) {
   const card = new Card(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
-  const cardElement = card.generateCard();
-  return cardElement;
+  return card.generateCard();
 }
 // функция всплытия карточки
 const popupImage = new PopupWithImage(popupShowImage);
@@ -53,11 +52,11 @@ function handleCardClick(name, link) {
   popupImage.open(name, link);
 }
 function handleCardLike(idCard) {
-  if (this._currentOwnLike) {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   56
+  if (this.currentOwnLike) {
     api.deleteLikeCard(idCard)
         .then((likes) => {
-          this._setLikeCounter(likes);
-          this._placeLikeButton.classList.remove('place__like-button_active');    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   60
+          this.setLikeCounter(likes);
+          this.setLikeOff();
         })
         .catch((error) =>{
           console.log(error);
@@ -65,8 +64,8 @@ function handleCardLike(idCard) {
     } else {
       api.addLikeCard(idCard)
         .then((likes) => {
-          this._setLikeCounter(likes);
-          this._placeLikeButton.classList.add('place__like-button_active');
+          this.setLikeCounter(likes);
+          this.setLikeOn();
           }
         )
         .catch((error) =>{
@@ -75,11 +74,13 @@ function handleCardLike(idCard) {
     }
 }
 
+ // log block delete this ~~~~~~ iwang
 function handleCardDelete() {
+  console.log('Переделать с помощью отдельного попап класса');
   //подтверждение удаления. удаление в хендлере сабмита
-  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   80
+/*  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   80
       popupConfirm.offSubmitButton();
-      api.deleteCard(this._idCard)
+      api.deleteCard()
         .then(() => {
             this._element.remove();
           }
@@ -92,8 +93,9 @@ function handleCardDelete() {
     }
   });
   popupConfirm.setEventListeners(); // события мышки
-  popupConfirm.open();
+  popupConfirm.open();*/
 }
+ // log block delete this ~~~~~~ iwang
 
 // попап добавления новой карточки
   const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
