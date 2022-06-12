@@ -4,6 +4,7 @@ import Section from "../scripts/components/Section.js";
 import Card from "../scripts/components/Card.js";
 import PopupWithImage from "../scripts/components/PopupWithImage.js";
 import PopupWithForm from "../scripts/components/PopupWithForm.js";
+import PopupConfirm from "../scripts/components/PopupConfirm.js";
 import UserInfo from "../scripts/components/UserInfo.js";
 import Api from "../scripts/components/Api.js";
 
@@ -35,7 +36,7 @@ let userId; // переменная ID екущего пользователя
 
 
 const defaultCardList = new Section(cardListSelector, (item) => {
-  const newCard = createNewCard(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   38
+  const newCard = createNewCard(item, cardSelector, handleCardClick, handleCardLike, handleCardDelete, userId);
   defaultCardList.addItem(newCard);
   });
 
@@ -73,29 +74,26 @@ function handleCardLike(idCard) {
         })
     }
 }
-
- // log block delete this ~~~~~~ iwang
-function handleCardDelete() {
-  console.log('Переделать с помощью отдельного попап класса');
-  //подтверждение удаления. удаление в хендлере сабмита
-/*  const popupConfirm = new PopupWithForm({popupSelector: popupDelConfirm, handleFormSubmit: () => {    //  FIXME  ~~~~~~~~~~~~~~~~~~~~   80
+const popupConfirm = new  PopupConfirm({popupSelector: popupDelConfirm, handleFormSubmit: (data) => {
       popupConfirm.offSubmitButton();
-      api.deleteCard()
-        .then(() => {
-            this._element.remove();
-          }
-        )
+      api.deleteCard(data.idCard)
+        .then(() => data.element.remove())
         .then(() => popupConfirm.close())
-        .catch((error) =>{
-          console.log(error);
-        })
-        .finally(()=> popupConfirm.onSubmitButton());
-    }
-  });
-  popupConfirm.setEventListeners(); // события мышки
-  popupConfirm.open();*/
-}
- // log block delete this ~~~~~~ iwang
+        .catch((error) => console.log(error))
+        .finally(() => popupConfirm.onSubmitButton());
+  }});
+popupConfirm.setEventListeners();
+
+
+function handleCardDelete(deletedData) {
+  /*
+  Передача данных в обработку сабмита
+  Всю ночь сидел думал и ничего умнее чем пинать данные по кругу не придумал.
+  Была еще идея записывать при создании карточки в переменную класса PopupConfirm, но эта идея показалась лучше и аккуратнее
+  */
+  popupConfirm.deletedCard(deletedData);
+  popupConfirm.open();
+  }
 
 // попап добавления новой карточки
   const popupAddCard = new PopupWithForm({popupSelector: popupAddPlace, handleFormSubmit: (inputValues) => {
@@ -114,7 +112,7 @@ function handleCardDelete() {
 
     }
   });
-popupAddCard.setEventListeners(); // разовая инициализация слушателей на экзепляр // log block delete this ~~~~~~ iwang
+popupAddCard.setEventListeners(); // разовая инициализация слушателей на экзепляр
 
 
 function openPopupAddPlace() {

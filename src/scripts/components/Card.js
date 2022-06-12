@@ -1,5 +1,6 @@
 export default class Card {
   constructor(dataCard, cardSelector, showPopupPlaceImage, handleCardLike, handleCardDelete, userId) {
+    this.deletedData ='';
     this._dataCard = dataCard;
     this._name = dataCard.name;
     this._altDescription = dataCard.name;
@@ -45,6 +46,7 @@ export default class Card {
       this.setLikeOn();
     }
 
+    this.deletedData = {element: this._element, idCard: this._idCard};
     // установить события для карточки
     this._setEventListeners();
     return this._element; // возвращение готового элемента
@@ -55,7 +57,7 @@ export default class Card {
     this._placeLikeButton.addEventListener('click', () => this._handleCardLike(this._idCard)); // событие для лайка
     if (this._ownCard) {
       this._element.querySelector('.place__delete-button').addEventListener('click', () => {
-        this._handleCardDelete();
+        this._handleCardDelete(this.deletedData); // удаляемый элемент и ID карточки
     }); // событие для корзины если владелец
     }
 
